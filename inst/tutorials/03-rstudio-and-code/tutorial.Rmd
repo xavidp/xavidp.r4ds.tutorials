@@ -1393,7 +1393,7 @@ question_text(NULL,
 ## Publishing
 ### 
 
-We'll be publishing our Quarto documents on the Internet by using Rpubs](https://rpubs.com/, a free web publishing service. Rpubs is managed by Posit (formerly RStudio), a leading company in the data science world. You will need to create an Rpubs account.
+We'll be publishing our Quarto documents on the Internet by using [Rpubs](https://rpubs.com/), a free web publishing service. Rpubs is managed by Posit (formerly RStudio), a leading company in the data science world. You will need to create an Rpubs account.
 
 ### 
 
