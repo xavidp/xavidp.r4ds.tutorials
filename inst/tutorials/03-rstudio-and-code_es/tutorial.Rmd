@@ -732,11 +732,11 @@ Si el texto del título sale de la imagen, es posible que desees modificar el ar
 ## Quarto 1
 ### 
 
-Quarto is a file format for making dynamic documents with R and other languages, like Python. To learn more about Quarto and how to use it, check out the [official webpage](https://quarto.org/)! Quarto is the successor technology to [R Markdown](https://rmarkdown.rstudio.com/).
+Quarto es un formato de archivo para crear documentos dinámicos con R y otros lenguajes, como Python. Para obtener más información sobre Quarto y cómo usarlo, ¡consulta la [página web oficial](https://quarto.org/)! Quarto es la tecnología sucesora de [R Markdown](https://rmarkdown.rstudio.com/).
 
-### Exercise 1
+### Ejercicio 1
 
-Click `File -> New File` at the top left of your RStudio window, and select "Quarto Document...". You will be offered the option of providing a "Title" and "Author" for the document. **Note that the title of a document has no necessary connection to the name of the file itself.** Add "My First Quarto Document" as the title and your name as the author. Click `Create`.
+Haz clic en `File -> New File` (`Archivo -> Nuevo archivo`) en la parte superior izquierda de la ventana de RStudio y selecciona "Quarto Document..." ("Documento de Quarto..."). Se te ofrecerá la opción de proporcionar un "Título" y un "Autor" para el documento. **Ten en cuenta que el título de un documento no tiene una conexión necesaria con el nombre del archivo en sí mismo.** Agrega "Mi Primer Documento en Quarto" como título y tu nombre como autor. Haz clic en `Create` (`Crear`).
 
 ```{r}
 include_graphics("images/new_quarto_doc.gif")
@@ -744,7 +744,7 @@ include_graphics("images/new_quarto_doc.gif")
 
 ### 
 
-Run `list.files()`. CP/CR.
+Ejecuta `list.files()`. CP/CR.
 
 ```{r quarto-1-1}
 question_text(NULL,
@@ -757,16 +757,16 @@ question_text(NULL,
 
 ### 
 
-Since we have not saved the file yet, it does not appear in this listing. 
+Como aún no hemos guardado el archivo, no aparece en este listado.
 
-Quarto is a command line interface tool, not an R package. This means that help is, by-and-large, not available through `?`. Instead, as you work through this tutorial, and use Quarto in the future, you should refer to the [Quarto documentation](https://quarto.org/). 
+Quarto es una herramienta de interfaz de línea de comandos, no un paquete R. Esto significa que la ayuda, en general, no está disponible a través del `?`. En su lugar, mientras trabajas en este tutorial y usas Quarto en el futuro, has de consultar la [documentación de Quarto](https://quarto.org/).
 
 
-### Exercise 2
+### Ejercicio 2
 
-Save the Quarto document by clicking the disk icon at the top of the file, or by using the shortcut `Cmd/Ctrl + s`. Name the file `quarto-1`. The `.qmd` file extension will be added automatically. 
+Guarda el documento de Quarto haciendo clic en el icono del disco en la parte superior del archivo, o usando el atajo `Cmd/Ctrl + s`. Nombra el archivo como `quarto-1`. La extensión de archivo `.qmd` se agregará automáticamente.
 
-Now that the document is saved, run `list.files()`. CP/CR.
+Ahora que el documento está guardado, ejecuta `list.files()`. CP/CR.
 
 ```{r quarto-1-2}
 question_text(NULL,
@@ -779,13 +779,13 @@ question_text(NULL,
 
 ### 
 
-This should return `quarto-1.qmd`, as well as `análisis-1.Rproj`, `script-1.R`, and `hist-harvard.png`. Note how different suffixes are used for different types of files.
+Esto debería devolver `quarto-1.qmd`, así como `análisis-1.Rproj`, `script-1.R` y `hist-harvard.png`. Ten en cuenta cómo se utilizan diferentes sufijos para diferentes tipos de archivos.
 
 
 
-### Exercise 3
+### Ejercicio 3
 
-In the top left corner above your Quarto document, you should see the buttons "Source", and "Visual". Click on "Source". This will revert how we see our Quarto document to be more similar to our R script. We will explore the "Visual" option shortly.
+En la esquina superior izquierda sobre tu documento de Quarto, deberías ver los botones "Source" y "Visual". Haz clic en "Source". Esto revertirá la forma en que vemos nuestro documento Quarto para que sea más similar a nuestro script de R. Exploraremos la opción "Visual" en breve.
 
 
 ```{r quarto-1-3}
@@ -801,20 +801,19 @@ question_text(NULL,
 
 <!-- DK: This could go somewhere else. -->
 
-It might be tempting to name your files `code.R` or `myscript.R`, but you should think a bit harder before choosing a name for your file. Three important principles for file naming are as follows:
+Puede ser tentador nombrar tus archivos `código.R` o `miscript.R`, pero has de pensar un poco más antes de elegir un nombre para tu archivo. Hay tres principios importantes a la hora de poner nombres a los archivos, y son los siguientes:
   
-* File names should be machine readable: avoid spaces, symbols, and special characters. Don’t rely on case sensitivity to distinguish files.
+* Los nombres de los archivos deben ser legibles por máquina: evita espacios, símbolos y caracteres especiales. No confíes en la distinción entre mayúsculas y minúsculas para distinguir archivos.
 
-* File names should be human readable: use file names to describe what’s in the file.
+* Los nombres de los archivos deben ser legibles por humanos: usa nombres de archivos que sirvan para describir lo que hay en el archivo.
 
-* File names should play well with default ordering: start file names with numbers so that alphabetical sorting puts them in the order they get used.
-
+* Los nombres de los archivos deberían funcionar bien con el orden predeterminado: comienza los nombres de archivo con números para que la ordenación alfabética los coloque en el orden en que se usan.
 
 
 
 ### Exercise 4
 
-The default Quarto file should look like this:
+El archivo predeterminado de Quarto debería tener este aspecto:
 
 ```{r out.width = "875px"}
 knitr::include_graphics("images/qmd_source.png")
@@ -822,25 +821,21 @@ knitr::include_graphics("images/qmd_source.png")
 
 ### 
 
-As you can see, a lot of the text is regular plain text, not code. However, there are code chunks which allow us to execute code when the document is rendered. Here's an example of an R code chunk:
+Como puedes ver, gran parte del texto es texto plano, no código. Sin embargo, hay fragmentos de código que nos permiten ejecutar código cuando se _renderiza_ (representa) el documento. Aquí hay un ejemplo de un fragmento de código de R:
 
 ```{r}
 knitr::include_graphics("images/source_chunk.png")
 ```
 
-Quarto documents utilize Markdown (an easy-to-write plain text format), which can contain chunks of embedded code. These code chunks can be written in many languages, including R and Python. Code chunks allow you to use R to create plots and other graphics, and then to display them in a rendered Quarto document.
+Los documentos en Quarto utilizan _Markdown_ (un formato de texto plano fácil de escribir), que puede contener fragmentos de código incrustado. Estos fragmentos de código se pueden escribir en muchos lenguajes, incluidos R y Python. Los fragmentos de código te permiten usar R para crear diagramas y otros gráficos, y luego mostrarlos en un documento renderizado de Quarto.
 
-### 
+###
 
-<!-- DK: First render as it. Discuss. Highlight the different parts. Explain echo = FALSE. Then edit it as below. Add some photos. -->
+Elimina todo excepto el encabezado YAML: el texto en el cuadro en la parte superior del archivo, así como los guiones. Agrega "Este es mi primer texto en Markdown." en la parte inferior del documento.
 
-<!-- FC: students may be confused about what a YAML header is, even with the description. Might be good to include a screenshot of what the YAML looks like. -->
+###
 
-Delete everything except the YAML header -- the text in the box at the top of the file, as well as the dashes. Add "This is my first Markdown text." at the bottom of the document.
-
-### 
-
-Save the file and run `readLines("quarto-1.qmd") |> tail()`. CP/CR.
+Guarda el archivo y ejecuta `readLines("quarto-1.qmd") |> tail()`. CP/CR.
 
 ```{r quarto-1-4}
 question_text(NULL,
@@ -855,27 +850,28 @@ question_text(NULL,
 
 <!-- DK: Drop some knowledge. Split up some of the paragraphs. -->
 
-This should return the last 6 lines of your Quarto document.
+Esto debería devolver las últimas 6 líneas de tu documento de Quarto.
 
-Quarto files are designed to be used in three ways:
+Los archivos de Quarto están diseñados para usarse de tres maneras:
 
-* For communicating to decision-makers, who want to focus on the conclusions, not the code behind the analysis.
+* Para comunicarse con las personas que toman decisiones, que quieren centrarse en las conclusiones, no en el código detrás del análisis.
 
-* For collaborating with other data scientists (including future you!), who are interested in both your conclusions, and how you reached them (i.e. the code).
+* Para colaborar con otras personas científicas de datos (¡incluida la futura-tu!), que están interesadas tanto en tus conclusiones como en cómo las alcanzaste (es decir, el código).
 
-* As an environment in which to do data science, as a modern-day lab notebook where you can capture not only what you did, but also what you were thinking.
+* Como un entorno en el que hacer ciencia de datos, como un cuaderno de laboratorio moderno donde puedes capturar no solo lo que hiziste, sino también lo que estabas pensando.
 
-### Exercise 5
+### Ejercicio 5
 
-The main advantage of a Quarto document, relative to a simple R script, is to create something which is a mixture of words and code. To "render" our Quarto document, click the "Render" arrow at the top of the Code pane, or use the shortcut `Cmd/Ctrl + shift + k`.
+La principal ventaja de un documento de Quarto, en relación con un script simple de R, es crear algo que es una mezcla de palabras y código. Para "renderizar" (representar el resultado de) nuestro documento de Quarto, haz clic en la flecha "Render" en la parte superior del panel de Código, o usa el atajo `Cmd/Ctrl + shift + k`.
 
-### 
+###
 
-To render is to transform a document from Markdown to some other format, e.g., html, PDF, Microsoft Word and so on.
+Renderizar es transformar un documento de Markdown en algún otro formato, por ejemplo, html, PDF, Microsoft Word, etc.
 
-### 
+###
 
-In the following box, copy all of the text from your rendered Quarto document (which appears in the Viewer tab).
+En el siguiente cuadro, copia todo el texto de tu documento de Quarto renderizado (que aparece en la pestaña Viewer).
+
 
 ```{r quarto-1-5}
 question_text(NULL,
@@ -890,19 +886,19 @@ question_text(NULL,
 
 <!-- DK: Explain about the setting we changed to achieve this. maybe change the setting and then change it back? -->
 
-Notice how the rendered document --- which is an html file in this case --- appears in the Viewer tab in the Files pane in the lower right of the workspace.
+Observa cómo el documento renderizado, que en este caso es un archivo html, aparece en la pestaña Viewer en el panel de Archivos en la parte inferior derecha del espacio de trabajo.
 
-### Exercise 6
+### Ejercicio 6
 
-In Quarto documents, you can use Markdown syntax. You can use this to create **bold** or *italic* text, and headers.
+En los documentos de Quarto, puedes usar la sintaxis de Markdown. Puedes usar esto para crear encabezados de varios niveles y texto en **negrita** o *cursiva*. por ejemplo.
 
-### 
+###
 
-Make the text created in the previous section a header by adding `##` at the beginning of the line (followed by a space), then adding this text under that as a description: `You can do a lot of cool things in Quarto like **bold** and *italic* text.` Render the file again. Does everything look good in the Viewer?
+Convierte el texto creado en la sección anterior en un encabezado agregando `##` al principio de la línea (seguido de un espacio), luego agrega este texto debajo como descripción: `Puedes hacer muchas cosas geniales en Quarto como texto en **negrita** y *cursiva*.` Renderiza el archivo de nuevo. ¿Todo se ve bien en el visor?
 
-### 
+###
 
-Run `readLines("quarto-1.qmd") |> tail()` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> tail()` en la Consola. CP/CR.
 
 ```{r quarto-1-6}
 question_text(NULL,
@@ -915,19 +911,20 @@ question_text(NULL,
 
 ### 
 
-You can find a full list of Markdown formatting styles and commands [here](https://www.markdownguide.org/basic-syntax/).
+Puedes encontrar una lista completa de estilos y comandos de formato Markdown [aquí](https://www.markdownguide.org/basic-syntax/).
 
-### Exercise 7
+### Ejercicio 7
 
-In the top left corner of the Code pane, you should be able to see two buttons: "Source" and "Visual". "Source" shows you all the code while "Visual" shows you (mostly) how the document will look after being rendered. You can edit a Quarto document while in either "Source" or "Visual" mode.
+En la esquina superior izquierda del panel de Código, deberías poder ver dos botones: "Source" y "Visual". "Source" te muestra todo el código, mientras que "Visual" te muestra (principalmente) cómo se verá el documento después de ser renderizado. Puedes editar un documento en Quarto mientras estás en el modo "Source" o "Visual".
 
-### 
+###
 
-We are going to switch to "Visual" and explore how we can edit while still in "Visual". Switch to "Visual" by clicking on it.
+Vamos a cambiar a "Visual" y explorar cómo podemos editar mientras aún estamos en "Visual". Cambia a "Visual" haciendo clic encima.
 
-### 
+###
 
-Type "I made this through Quarto" below "This is my first Markdown text" while still in "Visual". Copy and paste everything in your document (while still in "Visual") into the box below.
+Escribe "Hice esto a través de Quarto" debajo de "Este es mi primer texto Markdown" mientras aún estás en modo de edición "Visual". Copia y pega todo en tu documento (mientras aún estás en modo de edición "Visual") en el cuadro a continuación.
+
 
 ```{r quarto-1-7}
 question_text(NULL,
@@ -940,15 +937,16 @@ question_text(NULL,
 
 ### 
 
-Save the file. Render the document, just to make sure it worked.
+Guarda el archivo. Renderiza el documento, solo para asegurarte de que funcionó.
 
-### Exercise 8
+### Ejercicio 8
 
-Now let's try to add code chunks into our Quarto document. Under the text that we added earlier, add a code chunk either by pressing the Add Chunk command at the top of the editor (the green C button with a plus sign next to it) or with the shortcut `option + cmd + i`. The newly created code chunk will be empty, like the example from earlier.
+Ahora intentemos agregar fragmentos de código en nuestro documento de Quarto. Debajo del texto que agregamos anteriormente, agrega un fragmento de código presionando el comando "Add Chunk" ("Agregar fragmento") en la parte superior del editor (el botón C verde con un signo más al lado) o con el atajo `opción + cmd + i`. El fragmento de código recién creado estará vacío, como en el ejemplo anterior.
 
-### 
+###
 
-Save the file, and run `readLines("quarto-1.qmd") |> tail()` in the Console. CP/CR.
+Guarda el archivo y ejecuta `readLines("quarto-1.qmd") |> tail()` en la consola. CP/CR.
+
 
 ```{r quarto-1-8}
 question_text(NULL,
@@ -961,19 +959,19 @@ question_text(NULL,
 
 ### 
 
-This should show the code chunk you created.
+Esto debería mostrar el fragmento de código que creaste.
 
-### Exercise 9
+### Ejercicio 9
 
-<!-- DK: Use palmer penguins? -->
+<!-- DK: ¿Usar pingüinos Palmer? -->
 
-Let's try graphing the **iris** data within our code chunk. First of all, we need to load the libraries that we need.
+Intentemos graficar los datos de **iris** dentro de nuestro fragmento de código. En primer lugar, necesitamos cargar las bibliotecas que necesitamos.
 
-### 
+###
 
-We will often make a "setup" code chunk when we begin working in a file, where we can load libraries and prepare data for use. At the top of the file, directly below the YAML header, create another code chunk, as seen below.
+A menudo creamos un fragmento de código de "configuración" cuando comenzamos a trabajar en un archivo, donde podemos cargar bibliotecas y preparar datos para su uso. En la parte superior del archivo, directamente debajo del encabezado YAML, crea otro fragmento de código, como se ve a continuación.
 
-In the setup code chunk, use the `library()` function with the argument **tidyverse**. Always label your code chunks. Adding a label makes code chunks easier to sort and understand. Your setup chunk should look like this:
+En el fragmento de código de configuración, usa la función `library()` con el argumento **tidyverse**. Siempre etiqueta tus fragmentos de código. Agregar una etiqueta hace que los fragmentos de código sean más fáciles de ordenar y comprender. Tu fragmento de configuración debería verse así:
 
 ```{r}
 knitr::include_graphics("images/setup_chunk.png")
@@ -981,17 +979,17 @@ knitr::include_graphics("images/setup_chunk.png")
 
 ### 
 
-**Important Point**: There are two different "worlds" with which we are dealing. First is the world of the Quarto document, the qmd file. Second is the world of the Console in our current RStudio session. **These worlds only connect when we connect them**. Something written in a Quarto document --- or an R script --- is not part of our current R session.
+**Punto importante**: Hay dos "mundos" diferentes con los que estamos tratando. Primero está el mundo del documento de Quarto, el archivo qmd. El segundo es el mundo de la consola en nuestra sesión actual de RStudio. **Estos mundos solo se conectan cuando los conectamos nosotros**. Algo escrito en un documento de Quarto --- o un script de R --- no es parte de nuestra sesión de R actual (no se muestran los objectos de R en la pestaña _Environment_ del panel superior derecho mostrado en RStudio).
 
-### 
+###
 
-Right now, your libraries haven't been loaded into the current R session. To load them, you must run the code chunk. This can be done using the Run button in the top right of your qmd file, or with the shortcut cmd + shift + enter.
+En este momento, tus bibliotecas no se han cargado en la sesión de R actual. Para cargarlos, debes ejecutar el fragmento de código. Esto se puede hacer usando el botón Run en la parte superior derecha de tu archivo qmd, o con el atajo cmd + shift + enter.
 
-Run the code chunk.
+Ejecuta el fragmento de código.
 
-### 
+###
 
-Run `readLines("quarto-1.qmd") |> head(15)` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> head(15)` en la Consola. CP/CR.
 
 ```{r quarto-1-9}
 question_text(NULL,
@@ -1004,11 +1002,11 @@ question_text(NULL,
 
 ### 
 
-Whenever we use `library()` in our Quarto documents, we will use a setup code chunk. Do not load libraries in the same chunk as your plots.
+Siempre que usemos `library()` en nuestros documentos de Quarto, usaremos un fragmento de código de configuración. No cargues bibliotecas en el mismo fragmento donde hagas tus cálculos o gráficos.
 
-### Exercise 10
+### Ejercicio 10
 
-Go back to the code chunk that you first created. Let's create the following scatterplot in our Quarto document:
+Vuelve al fragmento de código que creaste al principio. Vamos a crear el siguiente gráfico de dispersión en nuestro documento de Quarto:
 
 ```{r}
 scat_p <- ggplot(data = iris, 
@@ -1016,19 +1014,19 @@ scat_p <- ggplot(data = iris,
                                y = Sepal.Length, 
                               color = Species)) +
   geom_point() +
-  labs(title = "Measurements for Different Species of Iris",
-       subtitle = "Virginica has the longest sepals",
-        x = "Sepal.Width",
-        y = "Sepal.Length", 
+  labs(title = "Medidas para Diferentes Especies de Iris",
+       subtitle = "Virginica tiene los sépalos más largos",
+        x = "Ancho.Sepalo", #Sepal.Width
+        y = "Largo.Sepalo", # Sepal.Length
        caption = "Fisher (1936)")
 scat_p
 ```
 
-This graph should be similar to ones you have created in previous visualization tutorials.
+Este gráfico debería ser similar a los que has creado en los tutoriales de visualización anteriores.
 
-### 
+###
 
-Copy the code below into your R Code Chunk.
+Copia el código a continuación en tu fragmento de Código de R.
 
 ```{r eval = FALSE, echo = TRUE}
 ggplot(data = iris, 
@@ -1039,9 +1037,9 @@ ggplot(data = iris,
 
 ### 
 
-Render the file. You should now see your R code chunk, as well as a blank plot, since we have not added a geom layer.
+Renderiza el archivo. Ahora deberías ver tu fragmento de código de R, así como un gráfico en blanco, ya que no hemos agregado una capa de geom aún.
 
-Run `readLines("quarto-1.qmd") |> tail(10)` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> tail(10)` en la Consola. CP/CR.
 
 ```{r quarto-1-10}
 question_text(NULL,
@@ -1052,13 +1050,13 @@ question_text(NULL,
     rows = 2)
 ```
 
-### Exercise 11
+### Ejercicio 11
 
-To add a geom layer, add `geom_point()` to your plot. You will need to render the file again. Now our plot isn't empty! It shows a scatterplot!
+Para agregar una capa de geom, agrega `geom_point()` a tu gráfico. Deberás renderizar de nuevo el archivo. ¡Ahora nuestro gráfico ya no sale en blanco; muestra un diagrama de dispersión!
 
-### 
+###
 
-Run `readLines("quarto-1.qmd") |> tail(10)` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> tail(10)` en la Consola. CP/CR.
 
 ```{r quarto-1-11}
 question_text(NULL,
@@ -1073,15 +1071,15 @@ question_text(NULL,
 
 <!-- DK: Drop some knowledge! -->
 
-The output should include the last 10 lines of code in your Quarto document.
+El resultado debe incluir las últimas 10 líneas de código de tu documento de Quarto.
 
-### Exercise 12
+### Ejercicio 12
 
-We just built the basic graph, but it still looks a little ugly. Labels are important for adding context to the graph and making it easier to understand.
+Acabamos de construir el gráfico básico, pero todavía se ve un poco feo. Las etiquetas son importantes para agregar contexto al gráfico y hacerlo más fácil de entender.
 
-Use the `labs()` function to add appropriate title and axis labels to the graph.
+Usa la función `labs()` para agregar títulos apropiados y etiquetas de eje al gráfico.
 
-Reminder, this is what our plot should look like
+Recordatorio, así es como debería verse nuestro gráfico
 
 ```{r echo = FALSE}
 scat_p
@@ -1089,11 +1087,11 @@ scat_p
 
 ### 
 
-Render the file again to see your completed graph.
+Renderiza el archivo nuevamente para ver tu gráfico completo.
 
-### 
+###
 
-Run `readLines("quarto-1.qmd") |> tail(10)` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> tail(10)` en la Consola. CP/CR.
 
 ```{r quarto-1-12}
 question_text(NULL,
@@ -1104,17 +1102,17 @@ question_text(NULL,
     rows = 2)
 ```
 
-### Exercise 13
+### Ejercicio 13
 
-Now, we just used a code chunk because we wanted to do a full graph. An R code chunk limits you from using R code in the same line as text. This is when we use **inline** R code.
+Ahora, usamos solo un fragmento de código porque queríamos hacer un gráfico completo. Un _Chunk_ ("fragmento") de código de R te impide usar código R en la misma línea que el texto. Aquí es cuando tenemos que usar el código R **en línea**.
 
-Inline R code is essentially a way for you to put simple R calculations in the same line as your text. Add the following code to your setup code chunk.
+El código R en línea es esencialmente una forma de colocar cálculos de R simples en la misma línea que el texto. Agrega el siguiente código a tu fragmento de código de configuración.
 
 ```{r echo = FALSE}
 x <- 1234567890
 ```
 
-The setup chunk should now look like this.
+El fragmento de configuración ahora debería verse así.
 
 ```{r}
 knitr::include_graphics("images/new_setup_chunk.png")
@@ -1122,7 +1120,7 @@ knitr::include_graphics("images/new_setup_chunk.png")
 
 ### 
 
-Run the code chunk, then in the Console, type `x` to verify that x has been defined. CP/CR.
+Ejecuta el fragmento de código, luego en la consola, escribe `x` para verificar que se haya definido x. CP/CR.
 
 ```{r quarto-1-13}
 question_text(NULL,
@@ -1133,33 +1131,33 @@ question_text(NULL,
     rows = 2)
 ```
 
-### Exercise 14
+### Ejercicio 14
 
-Lets make some inline R code.
+Vamos a hacer algo de código R en línea.
 
-Into your Quarto document, directly after the code chunk we just made, type the following text and inline R code. **NOTE**: Type this manually, do not copy. Pasted code can be finicky, and might not register as inline R code.
+En tu documento de Quarto, directamente después del fragmento de código que acabamos de crear, escribe el siguiente texto y el código R en línea. **NOTA**: Escribe esto manualmente, no lo copies. El código pegado puede ser quisquilloso y es posible que no se registre como código R en línea.
 
-The variable x has a value of: `` `r knitr::inline_expr("scales::comma(x)")` ``.
+La variable x tiene un valor de: `` `r knitr::inline_expr("scales::comma(x)")` ``.
 
-### 
+###
 
-<!-- DK: Fix this image. -->
+<!-- DK: corrija esta imagen. -->
 
-<!-- Render the file. You should see that the line now looks like, -->
+<!-- Procesar el archivo. Deberías ver que la línea ahora se parece a -->
 
 <!-- ```{r} -->
 
-<!-- knitr::include_graphics("images/x_value.png") -->
+<!-- knitr::include_graphics("imágenes/valor_x.png") -->
 
 <!-- ``` -->
 
-<!-- ###  -->
+<!-- ### -->
 
-As you can see, it's just a condensed version of a full code chunk. We declare the language (R) and then state our function (`scales::comma(x)`). By doing this, we can put R code in the same line as actual text. Remember that we use backticks to signify code here.
+Como puedes ver, es solo una versión condensada de un fragmento de código completo. Declaramos el lenguaje (R) y luego declaramos nuestra función (`scales::comma(x)`). Al hacer esto, podemos poner el código R en la misma línea que el texto real. Recuerda que aquí usamos acentos abiertos (o "graves") para indicar el código.
 
-### 
+###
 
-Run `readLines("quarto-1.qmd") |> tail(10)` in the Console. CP/CR.
+Ejecuta `readLines("quarto-1.qmd") |> tail(10)` en la Consola. CP/CR.
 
 ```{r quarto-1-14}
 question_text(NULL,
@@ -1172,19 +1170,19 @@ question_text(NULL,
 
 ### 
 
-Instead of hardcoding values into text in your Markdown file, you should always try to calculate values on the fly using inline R code. This ensures that values will always be accurate, regardless of changes to given data sets. For more info on inline R code, look at the [Quarto Execution Options Guide](https://quarto.org/docs/computations/execution-options.html).
+En lugar de codificar los valores en texto en tu archivo Markdown, debes intentar siempre calcular los valores sobre la marcha utilizando el código R en línea. Esto garantiza que los valores siempre serán precisos, independientemente de los cambios en los conjuntos de datos en cuestión. Para obtener más información sobre el código R en línea, puedes consultar la [Guía de opciones de ejecución de Quarto](https://quarto.org/docs/computations/execution-options.html).
 
-### Exercise 15
+### Ejercicio 15
 
-<!-- DK: Add an image. -->
+<!-- DK: Añadir una imagen. -->
 
-<!-- DK: Awkward! Show an example. -->
+<!-- DK: ¡Incómodo! Muestre un ejemplo. -->
 
-Right now, our Quarto document looks a little ugly. We don't want our code to be displayed in the rendered report. We can get rid of it using code chunk arguments.
+En este momento, nuestro documento en Quarto se ve un poco feo. No queremos que nuestro código se muestre en el informe presentado. Podemos deshacernos de él usando argumentos de los fragmentos de código.
 
-Code chunk arguments are a way to tell a chunk what it should do when rendered. Code chunk options are written below the `{r}` in our code chunk. Let's change `echo` to `false` to stop the code from showing in our report. `echo` like `label` is a code chunk option. Code chunk options are prefaced with a `#|`, called a "hash-pipe." After the name of the option, you place a colon, followed by the value for the option.
+Los argumentos de los fragmentos de código son una forma de decirle a un fragmento lo que debe hacer cuando se procesa. Las opciones de los fragmentos de código están escritas debajo de `{r}` en nuestro fragmento de código. Cambiemos `echo` a `false` para evitar que el código se muestre en nuestro informe. Tanto `echo` como `label` són opciones de fragmentos de código. Las opciones de los fragmentos de código están precedidas por un `#|`, llamado _"hash-pipe"_. Después del nombre de la opción, coloca dos puntos, seguidos del valor de la opción.
 
-Run `readLines("quarto-1.qmd")` in the Console, then copy-paste the command and the output below.
+Ejecuta `readLines("quarto-1.qmd")` en la consola, luego copia y pega el comando y el resultado a continuación.
 
 ```{r quarto-1-15}
 question_text(NULL,
@@ -1197,11 +1195,11 @@ question_text(NULL,
 
 ### 
 
-Some more useful code chunk options to look into include `warning` and `message`. A full list of code chunk options can be found on the [Quarto Execution Options Guide](https://quarto.org/docs/computations/execution-options.html). We will almost always use `echo: false` to hide code in our projects.
+Algunas otras opciones de fragmentos de código útiles que merece la pena mirar incluyen `warning` ("advertencia") y `message`("mensaje"). Puedes encontrar una lista completa de opciones de fragmentos de código en la [Guía de opciones de ejecución de Quarto](https://quarto.org/docs/computations/execution-options.html). Casi siempre usaremos `echo: false` para ocultarel código en nuestros proyectos.
 
-### 
+###
 
-Congratulations on creating a full Quarto document. You have learned how to create plots, add text, and use inline R code.
+Felicidades por la creación de un documento de Quarto completo. Has aprendido a crear gráficos, agregar texto y usar código R en línea.
 
 ## Quarto 2
 <!-- DK: Drop some knowledge. Tell us about the options now, and at the end, after you have taught them to us. -->
@@ -1392,22 +1390,22 @@ question_text(NULL,
     rows = 2)
 ```
 
-## Publishing
-### 
+## Publicación
+###
 
-We'll be publishing our Quarto documents on the Internet by using Rpubs](https://rpubs.com/, a free web publishing service. Rpubs is managed by Posit (formerly RStudio), a leading company in the data science world. You will need to create an Rpubs account.
+Publicaremos nuestros documentos de Quarto en Internet mediante [Rpubs](https://rpubs.com/), un servicio de publicación web gratuito. Rpubs está administrado por Posit (anteriormente llamado RStudio), una empresa líder en el mundo de la ciencia de datos. Deberás crearte una cuenta de Rpubs.
 
-### 
+###
 
-Sometime in the future, Rpubs will go away and be replaced by [Quarto Pub](https://quartopub.com/). But that has not (?) happened yet. Some of the images in this Section may be out of date.
+En algún momento en el futuro, Rpubs desaparecerá y será reemplazada por [Quarto Pub](https://quartopub.com/). Pero eso no ha sucedido todavía. Algunas de las imágenes en esta Sección necesitarán adaptarse al cambio cuando esto ocurra.
 
-### Exercise 1
+### Ejercicio 1
 
-Render the `quarto-2` file. By rendering, you are generating a report in HTML, which is what Rpubs publishes on the web.
+Renderiza el archivo `quarto-2`. Al renderizarlo, estás generando un informe en HTML, que es lo que Rpubs publica en la web.
 
-### 
+###
 
-Run `list.files()` in the Console, then copy-paste the command and the result below.
+Ejecuta `list.files()` en la consola, luego copia y pega el comando y el resultado a continuación.
 
 ```{r publishing-1}
 question_text(NULL,
@@ -1420,53 +1418,53 @@ question_text(NULL,
 
 ### 
 
-You should see a `quarto-2.html` file, which generates upon rendering your qmd. (Note that the "qmd" file extension stands for **Q**uarto **M**arkdown **D**document.)
+Deberías ver un archivo `quarto-2.html`, que se genera al renderizar tu qmd. (Ten en cuenta que la extensión de archivo "qmd" significa **Q**uarto **M**arkdown **D**ocument).
 
-### 
+###
 
-We sometimes edit the YAML header to get rid of information like the date and title, as it sometimes looks bad in the final render. However, make sure not to mess with the rest of the YAML formatting because it is a very structurally sensitive language. You can learn more about YAML editing at [bookdown.org](https://bookdown.org/yihui/bookdown/r-markdown.html).
+A veces editamos el encabezado YAML para deshacernos de información como la fecha y el título, ya que a veces se ve mal en el renderizado final. Sin embargo, asegúrate de no meterte con el resto del formato YAML porque es un lenguaje estructuralmente muy sensible. Puedes obtener más información sobre la edición de las cabeceras YAML en [bookdown.org](https://bookdown.org/yihui/bookdown/r-markdown.html).
 
-### Exercise 2
+### Ejercicio 2
 
-Notice a blue icon in the upper right-hand corner of your Quarto document. It should look like the image below.
+Observa un icono azul en la esquina superior derecha de tu documento de Quarto. Debería verse como la imagen de abajo.
 
 ```{r out.width = "875px"}
 include_graphics("images/publish_button.png")
 ```
 
-Press that button.
+Presiona en ese botón.
 
 <!-- DK: Poor organization. What are students submitting? -->
 
-### Exercise 3
+### Ejercicio 3
 
-You will be asked whether you want to publish to Rpubs or to Posit Connect. Use Rpubs. (Posit Connect costs money.) You will get a reminder that all documents you publish on RPubs are publicly visible. Click "Publish".
+Se te preguntará si deseas publicar en Rpubs o en Posit Connect. Usa Rpubs. (Posit Connect cuesta dinero). Recibirás un recordatorio de que todos los documentos que publiques en RPubs son visibles abiertamente. Haz clic en "Publish" ("Publicar").
 
 ```{r}
 include_graphics("images/rpubs-6.png")
 ```
 
-### Exercise 4
+### Ejercicio 4
 
-This will take you to the RPubs website. You will need to create an account. Follow the steps as prompted.
+Esto te llevará al sitio web de RPubs. Deberás crear una cuenta. Sigue los pasos que se te indiquen.
 
 ```{r}
 include_graphics("images/rpubs-7.png")
 ```
 
-### Exercise 5
+### Ejercicio 5
 
-Add document details. Name your document. Add a meaningful slug (a unique website name that's often just the name of your project), otherwise you will end up with an ugly, long address you didn't choose and can't remember. You can leave the description blank if you don't want to add one.
+Agrega los detalles del documento. Asigna un nombre a tu documento. Agrega un _slug_ significativo (un nombre de sitio web único que a menudo es solo el nombre de tu proyecto), de lo contrario, terminarás con una dirección larga y fea que no eligiste y no puedas recordar. Puedes dejar la descripción en blanco si no deseas agregar una.
 
-Now, you should be able to publish. In the *Terminal* (the tab right next to the Console, this is the way cool people publish to Quarto Pub) type `quarto publish quarto-pub` and hit enter 2 times. The first time is validating the location of publishing, and the second time is to publish.
+Ahora, deberías poder publicar. En el *Terminal* (la pestaña justo al lado de la Consola de R, esta es la forma en que las personas expertas publican en Quarto Pub) escribe `quarto publish quarto-pub` y presiona enter 2 veces. La primera vez es para validar la ubicación de la publicación y la segunda para publicar.
 
-### 
+###
 
-It may take a while, but you should see a new object in your Quarto Pub profile.
+Puede llevar un tiempo, pero deberías ver un nuevo objeto en tu perfil de Quarto Pub.
 
-### Exercise 6
+### Ejercicio 6
 
-Put the link to your RPubs page in the space below.
+Pon el enlace a tu página de RPubs en el espacio a continuación.
 
 ```{r publishing-6}
 question_text(NULL,
@@ -1479,12 +1477,13 @@ question_text(NULL,
 
 ### 
 
-Keep in mind that this is now a website that can be found on the internet, for anyone to see.
+Ten en cuenta que este es ahora un sitio web que se puede encontrar en Internet, para que cualquiera lo vea.
 
-## Summary
-This tutorial covered [Chapter 3 Workflow: basics](https://r4ds.hadley.nz/workflow-basics.html),  [Chapter 5  Workflow: code style](https://r4ds.hadley.nz/workflow-style.html), [Chapter 7  Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-scripts.html), and some material in [Chapter 29  Quarto](https://r4ds.hadley.nz/quarto.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+## Resumen
 
-You now know how to use R projects, R scripts, Quarto documents, how to publish a page on the internet using RPubs, and how to use a plethora of useful R commands!
+Este tutorial cubrió el [Capítulo 3 Flujo de trabajo: conceptos básicos](https://r4ds.hadley.nz/workflow-basics.html), [Capítulo 5 Flujo de trabajo: estilo de código](https://r4ds.hadley.nz/workflow-style .html), [Capítulo 7 Flujo de trabajo: scripts y proyectos](https://r4ds.hadley.nz/workflow-scripts.html), y algún material en [Capítulo 29 Quarto](https://r4ds.hadley.nz /quarto.html) de [*R for Data Science (2e)*](https://r4ds.hadley.nz/) de Hadley Wickham, Mine Çetinkaya-Rundel y Garrett Grolemund.
+
+¡Ahora ya sabes cómo usar proyectos de R, scripts de R, documentos de Quarto, cómo publicar una página en Internet usando RPubs y cómo usar una gran cantidad de comandos útiles de R!
 
 ```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
 ```
