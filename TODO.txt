@@ -1,6 +1,3 @@
-
-
-
 ## Current tutorial status
 
 All tutorials in Whole Game section are done, but would benefit from review, especially Chapter 1, which right now has no connection to the actual chapter.
@@ -15,9 +12,8 @@ Make more use of RStudio User Guide: https://docs.posit.co/ide/user/
 
 ## Notes for Xavier
 
-* The other tutorials which, like Spreadsheets, I think are stable enough to justify translation include: 04-data-transformation,  25-web-scraping, and 31-terminal. 
+* The other tutorials which, like Spreadsheets, I think are stable enough to justify translation include: 04-data-transformation,  25-web-scraping, and 31-terminal.
 
-* Any interest in working on the first (English) drafts of some of the tutorials?
 
 ## Zayan
 
@@ -39,25 +35,9 @@ Email me to set up a time to review.
 
 ## Srihith
 
-Read the Instructions for Writing R Tutorials from tutorial.helpers package: https://ppbds.github.io/tutorial.helpers/articles/instructions.html
-
-Read Tutorials for Books vignette from tutorial.helpers package: https://ppbds.github.io/tutorial.helpers/articles/books.html
-
-* Read Chapters 3 through 4 from [*R for Data Science (2e)*](https://r4ds.hadley.nz/). 
-
-* From the [**r4ds.tutorials**](https://ppbds.github.io/r4ds.tutorials/) package, complete the associated tutorials: RStudio and Code and Data Transformation.
-
-Send me solutions. Make a bunch of notes about things to fix.
-
-Go to “Set up for working on the primer” and go through and complete “Computer set up” and “Project set up”.
-
-Go to TODO.txt file in r4ds.tutorials and write “Srihith was here” at the top and save to show that our computers are connected and we can edit the same things.
-
-Submit a pull request to me.
-
 Then work on a separate PR for all your changes to the three tutorials you have done.
 
-https://ppbds.github.io/tutorial.helpers/
+Skip RStudio and Code until I email you, and then run pr_merge_main().
 
 Read R4DS Chapter 14. Start work on r4ds.tutorials chapters 14.
 
@@ -65,7 +45,7 @@ Read R4DS Chapter 14. Start work on r4ds.tutorials chapters 14.
 
 Submit PR for bootcamp which adds you to staff.qmd, along with a jpg in images/.
 
-Do chapter 15 strings tutorial. 
+Do chapter 15 strings tutorial.
 And chapter 16 regular expressions tutorials.
 Fix up Chapter 2.
 
