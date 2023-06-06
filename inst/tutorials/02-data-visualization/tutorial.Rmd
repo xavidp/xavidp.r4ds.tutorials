@@ -17,6 +17,7 @@ library(tutorial.helpers)
 library(tidyverse)
 library(palmerpenguins)
 library(primer.data)
+library(ggthemes)
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -53,7 +54,11 @@ plot_geom <- penguins |>
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 2: Data Visualization](https://r4ds.hadley.nz/data-visualize.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+This tutorial covers [Chapter 2: Data Visualization](https://r4ds.hadley.nz/data-visualize.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn about the key functions from the [**ggplot2**](https://ggplot2.tidyverse.org/index.html)package for data visualization, including geom_point(), 
+[`geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html),
+[`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html),
+[`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html),
+[`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html) and more.
 
 ## Creating first ggplot
 ### 
@@ -91,9 +96,12 @@ library(palmerpenguins)
 
 ### 
 
-A `variable`: a quantity, quality, or property that you can measure, `value`: state of a variable when you measure it, `observation`: a set of measurements made under similar conditions.
+When we explore the data set, we will see all types of data like integer, decimal, or string. When we explore penguins data set we will see many `values`: state of a variable when you measure it.
+
 
 ### Exercise 2
+
+In the Console, run `library(palmerpenguins)`. The Console and the Tutorial are separate environments. Loading a library in one does not load it in another.
 
 Run `?palmerpenguins` in the Console after loading in the package. After doing so, copy and paste the description here.
 
@@ -157,7 +165,7 @@ glimpse(...)
 
 ### 
 
-In RStudio, you can click on the name of the data frame in the Environment pane or run `View(penguins)` to open an interactive data viewer.
+When we run `glimpse(penguins)`, we see so many records or I shall say observations`: a set of measurements made under similar conditions.
 
 ### Exercise 6
 
@@ -173,7 +181,13 @@ The key command for making plots is `ggplot()` from the **ggplot2** package. Run
 ggplot(data = penguins)
 ```
 
+###
+
+You should see a blank, grey square. R has set up the area in which it can place a plot, but we have yet to give it anything to plot.
+
 ### 
+
+In the realm of data analysis, a fundamental concept is the notion of a variable. A variable represents a quantity, quality, or property that can be measured or observed. Variables can take different forms, depending on the nature of the data being studied. They can be numeric or categorical, continuous or discrete, qualitative or quantitative. 
 
 ### Exercise 7
 
@@ -192,6 +206,7 @@ sqrt(16)
 ### Exercise 8
 
 Run `16 |> sqrt()`
+
 ```{r creating-first-ggplo-8, exercise = TRUE}
 
 ```
@@ -208,6 +223,7 @@ The difference between the previous code was it that we are using the pipe opera
 
 Type `penguins` with the pipe operator `|>` and plug it into `ggplot()` like this
 `penguins |> ggplot()`
+
 ```{r creating-first-ggplo-9, exercise = TRUE}
 
 ```
@@ -224,11 +240,10 @@ penguins |>
 penguins which is the input is being plugged into the function `ggplot()` which gives the same output as `ggplot(data = penguins)`. While Indentation may not affect code, it is a good habit to do because it helps go through the code much faster.
 
 
-
-
 ### Exercise 10
 
 Copy the previous code and within `ggplot()`, run `mapping = aes(x = flipper_length_mm)` and see what you get.
+
 ```{r creating-first-ggplo-10, exercise = TRUE}
 
 ```
@@ -259,9 +274,10 @@ Copy the previous code, within the `aes()` set `y` equal to `body_mass_g` and ru
   ggplot(mapping = aes(x = ..., y = ...))
 ```
 
+###
+
 To display the data points we need to add a geometric object(geom). We can define a `geom`: the geometrical object that a plot uses to represent data. These geometric objects are made available in ggplot2 with functions that start with `geom_`. 
 
-### 
 
 ### Exercise 12
 
@@ -286,6 +302,7 @@ The function `geom_point()` adds a layer of points to your plot, which creates a
 ### Exercise 13
 
 In `ggplot()`, run `color = species` within `aes()`.
+
 ```{r creating-first-ggplo-13, exercise = TRUE}
 
 ```
@@ -308,6 +325,7 @@ When you ran it, you see that the data points differ by the color of the species
 ### Exercise 14
 
 Add `geom_smooth()` layer using `+`, and set `method` to `lm` within the functions arguement. 
+
 ```{r creating-first-ggplo-14, exercise = TRUE}
 
 ```
@@ -362,9 +380,10 @@ Not all individuals perceive colors differently due to color blindness or other 
   geom_point(mapping = ...(color = species, ... = species))
 ```
 
+### 
+
 In addition to the built-in shapes, ggplot also allows for custom shapes to be created and used in plots. This can be useful for creating unique visualizations or for incorporating custom symbols or logos into a plot.
 
-### 
 
 ### Exercise 17
 
@@ -424,39 +443,19 @@ Lets modify the x and y axises, type a comma and then run `x` and set it to `"Fl
   +
   labs( ... = "Body mass and flipper length"+
           subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-        x = ...)
+        x = ..., y = ...)
 ```
 
 ### 
 
 You can use expressions within the labs() function to include mathematical symbols or other special characters in your plot labels. For example, you can use the expression() function to include a Greek letter in a plot title or axis label.
 
-
-### Exercise 20
-
-Next to `x` axis label, type another comma and a `y`, then set it equal to `"Body mass (g)"` in quotes.
-
-```{r creating-first-ggplo-20, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r creating-first-ggplo-20-hint-1, eval = FALSE}
-... |>
-   +
-  labs( ... = "Body mass and flipper length"+
-          subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-        x = ..., y = ...)
-
-```
-
 ### 
 
 Finally, it's worth noting that the labs() function is just one way to modify plot labels in ggplot. Other functions, such as xlab(), ylab(), and ggtitle(), can be used to modify specific plot labels without affecting others. It's important to choose the appropriate function for your needs depending on the level of customization you require.
 
 
-### Exercise 21
+### Exercise 20
 
 You might see that it looks the same as the one in the beginning but we forgot one minor thing which is capitalizing the legend, we can do so by typing a comma and setting both `color` and `shape` equal to "Species" in quotes.
 
@@ -521,7 +520,7 @@ Before we create our plot, we need to get our data, so load the `palmerpenguins`
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-point-1-hint-1, eval = FALSE}
 library(palmerpenguins)
@@ -539,7 +538,7 @@ Run `penguins` with the pipe operator `|>` and plug it into `ggplot()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-point-2-hint-1, eval = FALSE}
 ... |>
@@ -654,7 +653,7 @@ In the ggplot2 package in R, the "geom_smooth()" function can be used to add a s
 
 ### Exercise 8
 
-Remove the `color` aesthetic within `ggplot()` and add it to `geom_point()` by running `geom_point(mapping = aes(color = species))` to get three different lines for each species.
+Add the `color` aesthetic within `ggplot()` to `geom_point()` by running `geom_point(mapping = aes(color = species))` to get three different lines for each species.
 
 ```{r geom-point-8, exercise = TRUE}
 
@@ -674,7 +673,7 @@ When aesthetic mappings are defined in ggplot(), at the global level, they’re 
 
 ### Exercise 9
 
-In addition to color, we can also map species to the shape aesthetic. Map the `species` variable to the `shape` aesthetic in addition to `color` within `geom_point()` by running `shape = color`.
+In addition to color, we can also map species to the shape aesthetic. Map the `species` variable to the `shape` aesthetic in addition to `color` within `geom_point()` by running `shape = species`.
 `
 ```{r geom-point-9, exercise = TRUE}
 
@@ -685,7 +684,7 @@ In addition to color, we can also map species to the shape aesthetic. Map the `s
 ```{r geom-point-9-hint-1, eval = FALSE}
 penguins |>
   ggplot(
-  mapping = aes(x = bill_length_mm, y = bill_depth_mm)
+  mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species)
 ) +
   geom_point(mapping = aes(color = ..., shape = ...)) +
   geom_smooth(method = "lm")
@@ -761,7 +760,7 @@ Lets load the **palmerpenguins** package using `library()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-bar-1-hint-1, eval = FALSE}
 library(palmerpenguins)
@@ -780,7 +779,7 @@ Run `penguins` and pipe it to a `ggplot()` call.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-bar-2-hint-1, eval = FALSE}
 penguins |>
@@ -803,7 +802,7 @@ Within `ggplot()`, set `x` to `island` inside of `aes()`
 
 ```{r geom-bar-3-hint-1, eval = FALSE}
 ... |>
-  ...(aes(x = species))
+  ...(aes(x = island))
 ```
 
 ### 
@@ -848,7 +847,7 @@ Lets integrate another categorical variable, so set `fill` to `species` within `
 
 ### 
 
-You can customize the order of the bars: By default, geom_bar orders the bars in ascending order based on the category. However, you can customize the order of the bars using the reorder function.
+If you wanted to customize the order of the bars, you can: By default, geom_bar orders the bars in ascending order based on the category. However, you can customize the order of the bars using the reorder function.
 
 ### Exercise 6
 
@@ -912,7 +911,7 @@ Lets load the **palmerpenguins** package using `library()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-histogram-1-hint-1, eval = FALSE}
 library(palmerpenguins)
@@ -930,7 +929,7 @@ Run `penguins` and pipe it to a `ggplot()` call.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-histogram-2-hint-1, eval = FALSE}
 penguins |> 
@@ -945,7 +944,7 @@ penguins |>
 
 ### Exercise 3
 
-Within, set `x` to `body_mass_g`.
+Within ggplot(), set `x` to `body_mass_g` inside of aesthetics
 
 ```{r geom-histogram-3, exercise = TRUE}
 
@@ -955,7 +954,7 @@ Within, set `x` to `body_mass_g`.
 
 ```{r geom-histogram-3-hint-1, eval = FALSE}
 ...|> 
-  ggplot(x = body_mass_g)
+  ggplot(aes(x = body_mass_g)
 
 ```
 
@@ -1018,7 +1017,7 @@ Now, set `binwidth` to 200 and see the difference.
 
 ```{r geom-histogram-6-hint-1, eval = FALSE}
 penguins |> 
-  ggplot(x = body_mass_g)+
+  ggplot(aes(x = body_mass_g))+
   geom_...(binwidth = ...)
 ```
 
@@ -1079,7 +1078,7 @@ Lets load the **palmerpenguins** package using `library()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-density-1-hint-1, eval = FALSE}
 library(palmerpenguins)
@@ -1097,7 +1096,7 @@ Run `penguins` and pipe it to a `ggplot()` call.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-density-2-hint-1, eval = FALSE}
 penguins |>
@@ -1259,15 +1258,16 @@ Lets load the **palmerpenguins** package using `library()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-boxplot-1-hint-1, eval = FALSE}
 library(palmerpenguins)
 ```
 
+### 
+
 Box plots, also known as box-and-whisker plots, are a type of data visualization used to display the distribution of a continuous variable. They were first introduced by John W. Tukey in 1977.
 
-### 
 
 ### Exercise 2
 
@@ -1276,7 +1276,7 @@ Run `penguins` and pipe it to a `ggplot()` call.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r geom-boxplot-2-hint-1, eval = FALSE}
 ... |>
@@ -1411,7 +1411,6 @@ Lets load the **palmerpenguins** package using `library()`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r facet-wrap-1-hint-1, eval = FALSE}
 library(palmerpenguins)
@@ -1429,7 +1428,7 @@ Run `penguins` and pipe it `ggplot()` with the pipe operator `|>`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r facet-wrap-2-hint-1, eval = FALSE}
 ... |>
@@ -1514,6 +1513,8 @@ Within `geom_point()`, add another aesthetic layer and run `color = species`.
 
 ### 
 
+If you want to explore more about the different aesthesitics within geom function check out [Aesthetics](https://ggplot2.tidyverse.org/reference/index.html#aesthetics).
+
 ### Exercise 7
 
 Within `geom_point()`, run `shape = species` in `aes()`.
@@ -1531,6 +1532,8 @@ Within `geom_point()`, run `shape = species` in `aes()`.
 ```
 
 ### 
+
+Fun Fact: Data visualization has a rich history dating back centuries. One of the earliest known examples of data visualization can be traced back to the 17th century when astronomer Galileo Galilei used diagrams to illustrate his observations of the moon. He sketched detailed drawings showcasing the varying phases of the moon, providing a visual representation of his scientific findings.
 
 ### Exercise 8
 
@@ -1571,7 +1574,6 @@ Finally set an appropriate title, subtitle, axes labels, and caption for the gra
 
 ### 
 
-`
 labeller: This argument can be used to customize the labels for the facet panels. By default, `facet_wrap()` uses the names of the categorical variables to label each panel. However, it is possible to create custom labels using functions like `label_parsed()` or `label_bquote()`.
 
 Reminder: This is what your graph should look like.
@@ -1593,7 +1595,7 @@ Before we save a plot we need to make on so start a pipe with `penguins` datset 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+
 
 ```{r saving-plots-1-hint-1, eval = FALSE}
 penguins |>
@@ -2566,7 +2568,11 @@ Good work! You created your first graph using `geom_bar()`. `geom_col()` is a si
 ## Summary
 ### 
 
-This tutorial covered [Chapter 2: Data Visualization](https://r4ds.hadley.nz/data-visualize.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
+This tutorial covered [Chapter 2: Data Visualization](https://r4ds.hadley.nz/data-visualize.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned about the key functions from the [**ggplot2**](https://ggplot2.tidyverse.org/index.html)package for data visualization, including [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html), 
+[`geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html),
+[`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html),
+[`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html),
+[`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html) and more.
 
 
 ```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
