@@ -1,6 +1,6 @@
 ---
 title: RStudio y Código
-author: Miriam Heiss and David Kane
+author: Miriam Heiss and David Kane (traducido por Xavier de Pedro)
 tutorial:
   id: rstudio-and-code
 output:
