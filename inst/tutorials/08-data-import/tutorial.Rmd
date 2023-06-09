@@ -443,7 +443,7 @@ Write code that will create default names for `"data/test_3.csv"` by setting the
 ```
 
 ```{r reading-data-from-a--16-hint-1, eval = FALSE}
-Use the `col_names argument and set it to FALSE
+Use the `col_names` argument and set it to FALSE
 ```
 
 ```{r reading-data-from-a--16-hint-2, eval = FALSE}
