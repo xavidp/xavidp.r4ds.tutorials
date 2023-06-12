@@ -485,7 +485,7 @@ cat(readLines("data/test_3.csv"), sep = "\n")
 
 <!-- Using `col_names`, write code that will name the columns `a`, `b` and `c`.  -->
 
-Set the argument `col_names` to a vector containing the column names `"a"`, `"b"`, and `"c"`.
+Establece el argumento `col_names` a un vector que contenga los nombres de columna `"a"`, `"b"` y `"c"`.
 
 ```{r reading-data-from-a--17, exercise = TRUE}
 
@@ -494,12 +494,12 @@ Set the argument `col_names` to a vector containing the column names `"a"`, `"b"
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r reading-data-from-a--17-hint-1, eval = FALSE}
-Use the `col_names` argument and set it to c("a", "b", "c"). 
+Usa el argumento `col_names` y ponlo a c("a", "b", "c").
 ```
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv("data/test_3.csv",
@@ -508,12 +508,12 @@ read_csv("data/test_3.csv",
 
 ### 
 
-`col_names` is not only specific to `read_csv()`, it can be used in other functions such as `read_excel` and `read_delim()`
+`col_names` no solo es específico de `read_csv()`, puede usarse en otras funciones como `read_excel` y `read_delim()`
 
 
-### Exercise 18
+### Ejercicio 18
 
-Get rid of the column specification message by setting the `col_types` argument to `cols(a = col_double(), b = col_double(), c = col_double())`.
+Deshazte del mensaje de especificación de columna configurando el argumento `col_types` en `cols(a = col_double(), b = col_double(), c = col_double())`.
 
 
 ```{r reading-data-from-a--18, exercise = TRUE}
@@ -532,7 +532,7 @@ read_csv("data/test_3.csv",
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv("data/test_3.csv",
@@ -544,12 +544,12 @@ read_csv("data/test_3.csv",
 
 ### 
 
-There are many other arguments to `cols`. You can type `?cols` into your console to see all the different arguments!
+Hay muchos otros argumentos para `cols`. ¡Puedes escribir `?cols` en tu consola de R para ver todos los diferentes argumentos!
 
 
-### Exercise 19
+### Ejercicio 19
 
-Consider the contents of the `test_5.csv` file. Note the "." for the first value for `b`. In this file, a period indicates a missing value. **This is not always true.** Missing values can be indicated in many different ways. And, sometimes, a period is just a period.
+Considera el contenido del archivo `test_5.csv`. Nota el "." para el primer valor de `b`. En este archivo, un punto indica un valor faltante. **Esto no siempre es cierto.** Los valores faltantes se pueden indicar de muchas maneras diferentes. Y, a veces, un punto es solo un punto.
 
 ```{r comment = ''}
 cat(readLines("data/test_5.csv"), sep = "\n")
@@ -557,14 +557,14 @@ cat(readLines("data/test_5.csv"), sep = "\n")
 
 ### 
 
-Write code to recognize the `.` value for `b` in `"data/test_5.csv"` as an NA value by setting the `na` argument to "." in `read_csv`.
+Escribe código para reconocer el valor `.` para `b` en `"data/test_5.csv"` como un valor NA estableciendo el argumento `na` en "." en la llamada de la función `read_csv`.
 
 ```{r reading-data-from-a--19, exercise = TRUE}
 
 ```
 
 ```{r reading-data-from-a--19-hint-1, eval = FALSE}
-Use the `na` argument and set it to "."
+Utiliza el argumento `na` y ponlo a "."
 ```
 
 ```{r reading-data-from-a--19-hint-2, eval = FALSE}
@@ -574,7 +574,7 @@ read_csv(file = "data/test_5.csv",
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv("data/test_5.csv",
@@ -583,12 +583,12 @@ read_csv("data/test_5.csv",
 
 ### 
 
-Before removing `"."`, the `col_type` of Column b was character, but after it became a `double`. One element can change the entire column which can mess up other parts of your code.
+Antes de eliminar el `"."`, el parámetro `col_type` de la columna b era "character", pero después se convirtió en un `double`. Un elemento puede cambiar toda la columna, lo que puede estropear otras partes de tu código.
 
 
-### Exercise 20
+### Ejercicio 20
 
-Consider the contents of the `test_6.csv` file.
+Considera el contenido del archivo `test_6.csv`.
 
 ```{r comment = ''}
 cat(readLines("data/test_6.csv"), sep = "\n")
@@ -596,14 +596,14 @@ cat(readLines("data/test_6.csv"), sep = "\n")
 
 ### 
 
-Write code for skipping the text lines within `"data/test_6.csv"` by setting the `comment` to "#".
+Escribe código para omitir las líneas de texto dentro de `"data/test_6.csv"` poniendo el parámetro `comment` a "#".
 
 ```{r reading-data-from-a--20, exercise = TRUE}
 
 ```
 
 ```{r reading-data-from-a--20-hint-1, eval = FALSE}
-Use the `comment` argument and set it to "#".
+Utiliza el argumento `comment` y configúralo para que valga "#".
 ```
 
 ```{r reading-data-from-a--20-hint-2, eval = FALSE}
@@ -613,7 +613,7 @@ read_csv(file = "data/test_6.csv",
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv("data/test_6.csv",
@@ -622,11 +622,11 @@ read_csv("data/test_6.csv",
 
 ### 
 
-It doesn't always have to be "#", it can be any character that designates a line as a comment!
+No siempre tiene que ser "#", ¡puede ser cualquier carácter que designe una línea como comentario!
 
-### Exercise 21
+### Ejercicio 21
 
-Consider the contents of the `test_7.csv` file.
+Considera el contenido del archivo `test_7.csv`.
 
 ```{r comment = ''}
 cat(readLines("data/test_7.csv"), sep = "\n")
@@ -634,21 +634,21 @@ cat(readLines("data/test_7.csv"), sep = "\n")
 
 ### 
 
-Write code to make sure the column `grade` within `"data/test_7.csv"` appears as an integer variable (`col_integer()`), and `student` as a character variable (`col_character()`).
+Escribe código para asegurarte de que la columna `grade` dentro de `"data/test_7.csv"` aparece como una variable de enteros (`col_integer()`), y `student` como una variable de caracteres (`col_character()`).
 
 ```{r reading-data-from-a--21, exercise = TRUE}
 
 ```
 
 ```{r reading-data-from-a--21-hint-1, eval = FALSE}
-Use the col_types argument and set it 
-to cols(grade = col_integer(), 
-        student = col_character())
+Usa el argumento col_types y ponlo
+a cols(grade = col_integer(), 
+       student = col_character())
 ```
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv("data/test_7.csv",
@@ -658,11 +658,11 @@ read_csv("data/test_7.csv",
 
 ### 
 
-There are many more data types such as `col_logical`, `col_double`, `col_date`, etc.
+Hay muchos más tipos de datos como `col_logical`, `col_double`, `col_date`, etc.
 
-### Exercise 22
+### Ejercicio 22
 
-Consider the following tibble `tbl_1`.
+Considere el siguiente _tibble_ `tbl_1`.
 
 ```{r}
 tbl_1 <- tibble(John = 1 , Aliya = 2, Maxilla = 3)
@@ -673,16 +673,16 @@ tbl_1
 
 <!-- AG: It seems like tutorial exercises don't store their files in the same place (at least on Windows), so I'm combining the list.files() and write_csv() so that you can see the result. -->
 
-Use `write_csv()` to save this tibble to a file named "tbl_1.csv". Then add `list.files()` after that in order to see the file that you've created.
+Usa `write_csv()` para guardar este _tibble_ en un archivo llamado "tbl_1.csv". Luego agrega `list.files()` después de esa instrucción para ver el archivo que has creado.
 
 ```{r reading-data-from-a--22, exercise = TRUE}
 
 ```
 
 ```{r reading-data-from-a--22-hint-1, eval = FALSE}
-The first argument should be the object you want 
-to save. The second argument should be the name you 
-want the file saved as.
+El primer argumento debe ser el objeto que deseas
+guardar. El segundo argumento debe ser el nombre
+con el que deseas que el archivo se guarde.
 ```
 
 ```{r reading-data-from-a--22-hint-2, eval = FALSE}
@@ -692,13 +692,13 @@ list.files()
 
 ### 
 
-Your result should look like include two files: `exercise.Rmd`, which is a file used by the **learnr** package and `tbl_1.csv`, which is the file you created.
+Tu resultado debería incluir dos archivos, por lo menos: `exercise.Rmd`, que es un archivo utilizado por el paquete **learnr** y `tbl_1.csv`, que es el archivo que creaste.
 
-There are many arguments to `write_csv()` such as `delim`, `na`, `col_names` and many more to make the written file cleaner.
+Hay muchos argumentos para `write_csv()` como `delim`, `na`, `col_names` y muchos más para hacer que el archivo escrito sea más limpio.
 
-### Exercise 23
+### Ejercicio 23
 
-Consider the contents of the `test_bad_names.csv` file.
+Considera el contenido del archivo `test_bad_names.csv`.
 
 ```{r comment = ''}
 cat(readLines("data/test_bad_names.csv"), sep = "\n")
@@ -706,7 +706,7 @@ cat(readLines("data/test_bad_names.csv"), sep = "\n")
 
 ### 
 
-Many files will have column names that are not formatted correctly, but **tidyverse** has the `name_repair` argument to fix that. Using the contents of `"data/test_bad_names.csv"`, use the `name_repair` argument and set it to `"universal"` in `read_csv()`
+Muchos archivos tendrán nombres de columna que no están formateados correctamente, pero **tidyverse** tiene el argumento `name_repair` para arreglar ese hecho. Usando el contenido de `"data/test_bad_names.csv"`, usa el argumento `name_repair` y ponlo a `"universal"` en la llamada a la función `read_csv()`
 
 ```{r reading-data-from-a--23, exercise = TRUE}
 
@@ -718,7 +718,7 @@ read_csv(file="data/test_bad_names.csv", name_repair="universal")
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv(file = "data/test_bad_names.csv", name_repair = "universal")
@@ -726,13 +726,13 @@ read_csv(file = "data/test_bad_names.csv", name_repair = "universal")
 
 ### 
 
-The `"universal"` makes sure the columns names are all unique and uses the syntax already built into the `name_repair` command to organize the names. There are other options such as `minimal` and`unique`, try them out!
+El `"universal"` se asegura de que los nombres de las columnas sean todos únicos y utiliza la sintaxis ya integrada en el comando `name_repair` para organizar los nombres. Hay otras opciones como `minimal` y `unique`, ¡pruébalas!
 
 
 
-### Exercise 24
+### Ejercicio 24
 
-Now read the file `"data/test_bad_names.csv"` using `read_csv()`. Then pipe it into `clean_names()`, a function from the **janitor** package.
+Ahora lee el archivo `"data/test_bad_names.csv"` usando `read_csv()`. Luego canalízalo a `clean_names()`, una función del paquete **janitor**.
 
 ```{r reading-data-from-a--24, exercise = TRUE}
 
@@ -745,7 +745,7 @@ read_csv(file = "data/test_bad_names.csv") |>
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv(file = "data/test_bad_names.csv") |> 
@@ -754,11 +754,11 @@ read_csv(file = "data/test_bad_names.csv") |>
 
 ### 
 
-The function `clean_names()` used the syntax within the **janitor** package to clean the names and also makes them unique. This lets you easily access the different columns without running into errors.
+La función `clean_names()` usó un algoritmo dentro del paquete **janitor** para limpiar los nombres y también hacerlos únicos. Esto te permite acceder fácilmente a las diferentes columnas sin cometer errores.
 
-### Exercise 25
+### Ejercicio 25
 
-To make the code cleaner and to reduce the number of pipes, you can set the `name_repair` argument to `janitor::make_clean_names` in `read_csv()`.
+Para hacer que el código sea más limpio y reducir el número de canalizaciones, puedes establecer el argumento `name_repair` a `janitor::make_clean_names` en la llamada a la función `read_csv()`.
 
 ```{r reading-data-from-a--25, exercise = TRUE}
 
@@ -773,7 +773,7 @@ read_csv(file = "data/test_bad_names.csv",
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_csv(file = "data/test_bad_names.csv",
@@ -782,7 +782,7 @@ read_csv(file = "data/test_bad_names.csv",
 
 ### 
 
-The **janitor** package has a function called `remove_empty()` to remove empty spaces, `remove_constant()` to remove columns of constant values, and many more. Try them out!
+El paquete **janitor** tiene una función llamada `remove_empty()` para eliminar espacios vacíos, `remove_constant()` para eliminar columnas de valores constantes y muchas más. ¡Pruébalos!
 
 
 
@@ -811,7 +811,7 @@ Also use the `delim` argument and set it to "|".
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_delim("data/delim_1.txt", delim = "|")
@@ -854,7 +854,7 @@ read_delim("data/delim_2.txt",
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r comment = ''}
 read_delim("data/delim_2.txt", 
@@ -1253,7 +1253,7 @@ list.files("data", ... = "similar")
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r}
 list.files("data", pattern = "similar")
@@ -1279,7 +1279,7 @@ list.files("data", pattern = "similar", full.names = ...)
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r}
 list.files("data", pattern = "similar", full.names = TRUE)
@@ -1331,7 +1331,7 @@ In `read_csv()`, set the argument `na` to `"."` to get rid of the character in c
 
 ### 
 
-The result when your code is run should look like this:
+El resultado cuando se ejecute tu código debería verse así:
 
 ```{r}
 list.files("data", pattern = "similar", full.names = TRUE) |> 
