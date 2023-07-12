@@ -1,6 +1,6 @@
 Package: r4ds.tutorials
 Title: Tutorials for R for Data Science
-Version: 0.0.1.9009
+Version: 0.0.2.9001
 Authors@R: 
     person(given = "David",
            family = "Kane",
@@ -19,33 +19,39 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
-    primer.data,
     tutorial.helpers
-Suggests: 
+Suggests:
+    arrow,
     babynames,
+    dbplyr,
     dplyr,
+    duckdb,
     dygraphs,
-    ggalt,
-    ggdist,
     gghighlight,
+    ggrepel,
     ggthemes,
     janitor,
     leaflet,
     learnr,
+    maps,
     nycflights13,
     palmerpenguins,
+    patchwork,
     plotly,
     readxl,
     reprex,
+    repurrrsive,
     rsconnect,
     rvest,
     socviz,
     testthat (>= 3.0.0),
     tidyverse,
     usethis,
-    writexl
+    writexl,
+    Lahman,
+    RPostgres,
+    RSQLite
 Config/testthat/edition: 3  
-Remotes: 
-    PPBDS/primer.data
 BugReports: https://github.com/ppbds/r4ds.tutorials/issues
 URL: https://ppbds.github.io/r4ds.tutorials/
+

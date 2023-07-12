@@ -1,0 +1,1271 @@
+---
+title: Functions
+author: Anish Bellamkonda
+tutorial:
+  id: functions
+output:
+  learnr::tutorial:
+    progressive: yes
+    allow_skip: yes
+runtime: shiny_prerendered
+description: 'Tutorial for Chapter 26: Functions'
+---
+
+```{r setup, include = FALSE}
+library(learnr)
+library(tutorial.helpers)
+library(tidyverse)
+library(nycflights13)
+knitr::opts_chunk$set(echo = FALSE)
+options(tutorial.exercise.timelimit = 60, 
+        tutorial.storage = "local") 
+
+myfunc_1 <- function(){}
+myfunc_2 <- function(x){}
+myfunc_3 <- function(x){x^2}
+
+rescale01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+df <- tibble(
+  a = rnorm(5),
+  b = rnorm(5),
+  c = rnorm(5),
+  d = rnorm(5),
+)
+
+grouped_mean <- function(df, group_var, mean_var) {
+  df |> 
+    group_by(group_var) |> 
+    summarize(mean(mean_var))
+}
+
+grouped_mean1 <- function(df, group_var, mean_var) {
+  df |> 
+    group_by({{ group_var }}) |> 
+    summarize(mean({{ mean_var }}))
+}
+
+summary6 <- function(data, var) {
+  data |> summarize(
+    min = min({{ var }}, na.rm = TRUE),
+    mean = mean({{ var }}, na.rm = TRUE),
+    median = median({{ var }}, na.rm = TRUE),
+    max = max({{ var }}, na.rm = TRUE),
+    n = n(),
+    n_miss = sum(is.na({{ var }})),
+    .groups = "drop"
+  )
+}
+
+count_prop <- function(df, var, sort = FALSE) {
+  df |>
+    count({{ var }}, sort = sort) |>
+    mutate(prop = n / sum(n))
+}
+
+histogram <- function(df, var, binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth)
+}
+
+histogram1 <- function(df, var, binwidth) {
+  label <- rlang::englue("A histogram of {{var}} with binwidth {binwidth}")
+  
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth) + 
+    labs(title = label)
+}
+
+clean_number <- function(x) {
+  is_pct <- str_detect(x, "%")
+  num <- x |> 
+    str_remove_all("%") |> 
+    str_remove_all(",") |> 
+    str_remove_all(fixed("$")) |> 
+    as.numeric(x)
+  if_else(is_pct, num / 100, num)
+}
+
+commas <- function(x) {
+  str_flatten(x, collapse = ", ", last = " and ")
+}
+
+mape <- function(actual, predicted) {
+  sum(abs((actual - predicted) / actual)) / length(actual)
+}
+
+first_upper <- function(x) {
+  str_sub(x, 1, 1) <- str_to_upper(str_sub(x, 1, 1))
+  x
+}
+
+
+sorted_bars <- function(df, var) {
+  df |> 
+    mutate({{ var }} := fct_rev(fct_infreq({{ var }})))  |>
+    ggplot(aes(y = {{ var }})) +
+    geom_bar()
+}
+
+conditional_bars <- function(df, condition, var) {
+  df |> 
+    filter({{ condition }}) |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_bar()
+}
+
+```
+
+```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
+```
+
+```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```
+
+
+
+## Introduction
+### 
+
+This tutorial covers [Chapter 26: Functions](https://r4ds.hadley.nz/functions.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to make simple functions at the beginning but will progress into making vector, data frame, and plot functions which are much more complex that the simple functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste.
+
+## Simple function
+### 
+
+One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
+
+1.You can give a function an evocative name that makes your code easier to understand.
+
+2.As requirements change, you only need to update code in one place, instead of many.
+
+3.You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+4.It makes it easier to reuse work from project-to-project, increasing your productivity over time
+
+### Exercise 1
+
+Before diving into what a function, let's first make ourselves aware about the syntax of making a function in R.
+
+```
+name <- function(arguements){
+  body
+}
+
+```
+### 
+
+It is very important to have a name that defines the purpose of the function. The arguments can be anything, but int his section we will mostly use `x` and finally the body which is the code that makes the functions useful.
+
+### Exercise 2
+
+Let's make a function and we will name it `myfunc_1` and assign it to `function()` Don't pass in anything and close the function with curly braces.
+
+```{r simple-function-2, exercise = TRUE}
+
+```
+
+```{r simple-function-2-hint-1, eval = FALSE}
+myfunc_1 <- function(){
+  
+}
+```
+
+### 
+
+Even though there is no code in the body, you have made your first function in R.
+
+### Exercise 3
+
+Run `myfunc_1()`.
+
+```{r simple-function-3, exercise = TRUE}
+
+```
+
+```{r simple-function-3-hint-1, eval = FALSE}
+myfunc_1()
+```
+
+### 
+
+The output you will get is null because the function is doing nothing and sever no purpose therefore R returns null.
+
+### Exercise 4
+
+This time only run `myfunc_1`.
+
+```{r simple-function-4, exercise = TRUE}
+
+```
+
+```{r simple-function-4-hint-1, eval = FALSE}
+myfunc_1
+```
+
+### 
+
+When you don't include the parenthesis when calling a function, you will get the arguments used, and the code in the body of the function.
+
+### Exercise 5
+
+Create a function, let's name it `myfunc_2` and assign it to `function()` and we will pass in `x` and then enclose the function with curly braces.
+
+```{r simple-function-5, exercise = TRUE}
+
+```
+
+```{r simple-function-5-hint-1, eval = FALSE}
+myfunc_2 <- ...(x){
+  
+}
+```
+
+### 
+
+This is the same as `myfunc_2` but it takes the argument `x`.
+
+### Exercise 6
+
+Run `myfunc_2()` and pass in any number you want.
+
+```{r simple-function-6, exercise = TRUE}
+
+```
+
+```{r simple-function-6-hint-1, eval = FALSE}
+myfunc_2(...)
+```
+
+### 
+
+We get the same result as `myfunc_1` does because once again we have nothing in the body of the code.
+
+### Exercise 7
+
+Now run `myfunc_2` with no arguments.
+
+```{r simple-function-7, exercise = TRUE}
+
+```
+
+```{r simple-function-7-hint-1, eval = FALSE}
+myfunc_2()
+```
+
+### 
+
+We still get null, but what will happen if we were have code in the body of function which uses the argument.
+
+### Exercise 8
+
+Create a new function called `myfunc_3` and assign it to `function()` and pass in `x` as the argument. Then enclose the function with curly braces. Then within the body of the function pass in `x^2`.
+
+```{r simple-function-8, exercise = TRUE}
+
+```
+
+```{r simple-function-8-hint-1, eval = FALSE}
+myfunc_3 <- function(x){
+  ...
+}
+```
+
+### 
+
+We just made a function which takes a number as an argument and squares it.
+
+### Exercise 9
+
+Let's now use the function, so run `myfunc_3()` and pass in a number you like.
+
+```{r simple-function-9, exercise = TRUE}
+
+```
+
+```{r simple-function-9-hint-1, eval = FALSE}
+myfunc_3(..)
+```
+
+### 
+
+When we run it we get the square of our number. What happens if we pass a string in?
+
+### Exercise 10
+
+Run `myfunc_3()` and pass in `"abc"`.
+
+```{r simple-function-10, exercise = TRUE}
+
+```
+
+```{r simple-function-10-hint-1, eval = FALSE}
+myfunc_3("abc")
+```
+
+### 
+
+We get the error that we are using a non-numeric argument to a binary operator and it's true since we can square a string.
+
+### Exercise 11
+
+Now run `myfunc_3()` with no argument.
+
+```{r simple-function-11, exercise = TRUE}
+
+```
+
+```{r simple-function-11-hint-1, eval = FALSE}
+myfunc_3()
+```
+
+### 
+
+We didn't get this error in `myfunc_2()`, but why are we getting it here? It is because we have code that actually uses the arguement to return a value and serve its purpose.
+
+Good Work! You now know the basics of function.
+
+
+## Vector functions
+### 
+
+We’ll begin with vector functions: functions that take one or more vectors and return a vector result. For example, take a look at this code. What does it do?
+
+
+```
+df <- tibble(
+  a = rnorm(5),
+  b = rnorm(5),
+  c = rnorm(5),
+  d = rnorm(5),
+)
+
+df |> mutate(
+  a = (a - min(a, na.rm = TRUE)) / 
+    (max(a, na.rm = TRUE) - min(a, na.rm = TRUE)),
+  b = (b - min(b, na.rm = TRUE)) / 
+    (max(b, na.rm = TRUE) - min(a, na.rm = TRUE)),
+  c = (c - min(c, na.rm = TRUE)) / 
+    (max(c, na.rm = TRUE) - min(c, na.rm = TRUE)),
+  d = (d - min(d, na.rm = TRUE)) / 
+    (max(d, na.rm = TRUE) - min(d, na.rm = TRUE)),
+)
+```
+
+### 
+
+You might have noticed that this code rescales each column to have a range from 0 to 1. However, there is a mistake that went unnoticed. When Anish copied and pasted the code, they inadvertently forgot to change an `'a'` to a `'b'`. This highlights the importance of learning how to write functions, as it helps prevent such mistakes from occurring.
+
+### Exercise 1
+
+To write a function you need to first analyse your repeated code to figure what parts are constant and what parts vary. If we take the code above and pull it outside of `mutate()`, it’s a little easier to see the pattern because each repetition is now one line:
+
+```
+(a - min(a, na.rm = TRUE)) / (max(a, na.rm = TRUE) - min(a, na.rm = TRUE))
+(b - min(b, na.rm = TRUE)) / (max(b, na.rm = TRUE) - min(b, na.rm = TRUE))
+(c - min(c, na.rm = TRUE)) / (max(c, na.rm = TRUE) - min(c, na.rm = TRUE))
+(d - min(d, na.rm = TRUE)) / (max(d, na.rm = TRUE) - min(d, na.rm = TRUE))  
+
+```
+
+To make this a bit clearer we can replace the bit that varies with █:
+
+```
+(█ - min(█, na.rm = TRUE)) / (max(█, na.rm = TRUE) - min(█, na.rm = TRUE))
+```
+
+### 
+
+To turn this into a function you need three things: name, arguments, and a body.
+
+### Exercise 2
+
+Type `rescale01` and assign it to `function()` and pass in `x` to be the argument which will be passed in when using the function. After `function()`, don't forget to add curly braces.
+
+```{r vector-functions-2, exercise = TRUE}
+
+```
+
+```{r vector-functions-2-hint-1, eval = FALSE}
+... <- function(...){
+  
+}
+```
+
+### 
+
+Now that we have the name and the arguments set, let set up the body of the function.
+
+### Exercise 3
+
+Copy the previous code, and inside the curly braces pass in `(a - min(a, na.rm = TRUE)) / (max(a, na.rm = TRUE) - min(a, na.rm = TRUE))`, but make sure to change the `a` and `b` to `x`. 
+
+```{r vector-functions-3, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vector-functions-3-hint-1, eval = FALSE}
+... <- function(...) {
+  (... - min(x, na.rm = TRUE)) / (max(..., na.rm = TRUE) - min(x, na.rm = ...))
+}
+```
+
+### 
+
+At this point you might test with a few simple inputs to make sure you’ve captured the logic correctly.
+
+### Exercise 4
+
+Type `rescale01()` and pass in the vector: `c(-10,0,10)`.
+
+```{r vector-functions-4, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vector-functions-4-hint-1, eval = FALSE}
+scaler01(...)
+```
+
+### 
+
+Let's now use this on a tibble.
+
+### Exercise 5
+
+Run `df` to have a look at the dataset.
+
+```{r vector-functions-5, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vector-functions-5-hint-1, eval = FALSE}
+df
+```
+
+### 
+
+These numbers are generated from `rnorm()` which generates random numbers from a normal (Gaussian) distribution.
+
+### Exercise 6
+
+Start a pipe with `df` to `mutate()`, within `mutate()`, set all column names equal to `rscale01()` and pass in the name of the column as the argument. For example, `a = rescale01(a)`.
+
+```{r vector-functions-6, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vector-functions-6-hint-1, eval = FALSE}
+df |> ...(
+  a = rescale01(a),
+  b = rescale01(...),
+  ... = rescale01(c),
+  d = ...(d),
+)
+```
+
+### 
+
+You might notice that the `rescale01()` function does some work way too many times instead of just once so let's improve the function and optimize it.
+
+### Exercise 7
+
+To avoid computing `min()` twice and `max()` once, we can use `range()` to calculate both the minimum and maximum values in a single step. Create a new function called `rscale02` by assigning `function(x)` to it. Insert the curly braces and, for the body, create a variable `rng` and set it to `range(x, na.rm = TRUE)`. Then, on a new line, calculate `(x - rng[1]) / (rng[2] - rng[1])`.
+
+```{r vector-functions-7, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vector-functions-7-hint-1, eval = FALSE}
+rescale02 <- function(...) {
+  rng <- range(x, ... = TRUE)
+  (...) / (rng[2] - ....[1])
+}
+```
+
+### 
+
+Now you’ve got the basic idea of functions, let’s take a look at a whole bunch of examples. We’ll start by looking at “mutate” functions, i.e. functions that work well inside of `mutate()` and `filter()` because they return an output of the same length as the input.
+
+### Exercise 8
+
+Of course functions don’t just need to work with numeric variables. You might want to do some repeated string manipulation. Maybe you need to make the first character upper case.
+
+Create a function `first_upper` and assign it to `function()` and pass in `x`. Within the curly braces, pass in `  str_sub(x, 1, 1) <- str_to_upper(str_sub(x, 1, 1))` and then on a new line call `x`.
+```{r vector-functions-8, exercise = TRUE}
+
+```
+
+```{r vector-functions-8-hint-1, eval = FALSE}
+... <- function(...) {
+  str_sub(x, 1, ....) <- str_to_upper(...(x, 1, 1))
+  ...
+}
+```
+
+### 
+
+Let's now use it on a string.
+
+
+### Exercise 9
+
+Call `first_upper()` and pass in `"hello"` as the argument.
+
+```{r vector-functions-9, exercise = TRUE}
+
+```
+
+```{r vector-functions-9-hint-1, eval = FALSE}
+first_upper("...")
+```
+
+### 
+
+Instead of just having the first letter upper case, maybe you want to strip percent signs, commas, and dollar signs from a string before converting it into a number.
+
+### Exercise 10
+
+Below is what the function would look like:
+
+```
+clean_number <- function(x) {
+  is_pct <- str_detect(x, "%")
+  num <- x |> 
+    str_remove_all("%") |> 
+    str_remove_all(",") |> 
+    str_remove_all(fixed("$")) |> 
+    as.numeric(x)
+  if_else(is_pct, num / 100, num)
+}
+```
+
+### 
+
+Let's now use this on numbers which are in string.
+
+### Exercise 11
+
+Call `clean_number()` and pass in `"$12,300"` and then on a new line call `clean_number()` and pass in `"45%"`.
+
+```{r vector-functions-11, exercise = TRUE}
+
+```
+
+```{r vector-functions-11-hint-1, eval = FALSE}
+clean_number("$12,300")
+clean_number("45%")
+```
+
+### 
+
+We’ve focused on examples that take a single vector because we think they’re the most common. But there’s no reason that your function can’t take multiple vector inputs.
+
+### Exercise 12
+
+Another important family of vector functions is summary functions, functions that return a single value for use in `summarize()`. Sometimes this can just be a matter of setting a default argument or two.
+
+Let's create a function called `commas` that takes multiple strings and combines them into one string separated by `commas`. Assign `function(x)` to commas as its definition. Within the function body, use `str_flatten()` and pass in `x` with `collapse = ", "` and `last = " and "` as arguments.
+
+```{r vector-functions-12, exercise = TRUE}
+
+```
+
+```{r vector-functions-12-hint-1, eval = FALSE}
+... <- function(x) {
+  str_flatten(x, ... = ", ", last = " ... ")
+}
+```
+
+### 
+
+Let's now use the function on a vector of strings.
+
+### Exercise 13
+
+Type `commas()` and pass in a vector `c("cat","dog","piegon")`./
+
+```{r vector-functions-13, exercise = TRUE}
+
+```
+
+```{r vector-functions-13-hint-1, eval = FALSE}
+commas(...("cat", "...", "..."))
+```
+
+### 
+
+You can also write functions with multiple vector inputs. 
+
+### Exercise 14
+
+For example, maybe you want to compute the mean absolute prediction error to help you compare model predictions with actual values. Create a function `mape` and adding to `function()` and pass in `actual` and `predicted` as variables. Within the curly braces, pass in `sum(abs((actual - predicted) / actual)) / length(actual)`.
+
+```{r vector-functions-14, exercise = TRUE}
+
+```
+
+```{r vector-functions-14-hint-1, eval = FALSE}
+... <- function(actual, ...) {
+  sum(...((actual - predicted) / ...)) / length(...)
+}
+```
+
+### 
+
+Good Work!
+
+Now that you have knowlegde on vecotr unctions, let's move on to Data Frame functions.
+
+
+## Data frame functions
+### 
+
+Vector functions reduce code repetition in dplyr verbs. When duplicating verbs multiple times in a pipeline, consider writing a data frame function. These functions, like dplyr verbs, take a data frame as the first argument, additional arguments for operations, and return a data frame or vector.
+
+To address indirection challenges, embrace the `{{ }}` syntax. We provide various examples to illustrate its application.
+
+### Exercise 1
+
+When you start writing functions that use dplyr verbs you rapidly hit the problem of indirection. Let’s illustrate the problem with a very simple function: `grouped_mean()`. The goal of this function is to compute the mean of `mean_var` grouped by `group_var`.
+
+Type `grouped_mean` and assign it to `function(df, group_var, mean_var)`, then add curly braces.
+
+```{r data-frame-functions-1, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r data-frame-functions-1-hint-1, eval = FALSE}
+grouped_mean <- function(...){
+  
+}
+```
+
+### 
+
+Tidy evaluation is incredibly useful in most cases, as it simplifies data analyses by eliminating the need to explicitly specify the data frame a variable belongs to - it is inferred from the context. However, when we aim to encapsulate repetitive tidyverse code into a function, the challenge arises.
+
+### Exercise 2
+
+Within the curly braces, start a pipe with `df` to `group_by()` and pass in `group_var`, then extend the pipe to `summarize()` and pass in`mean(mean_var)`.
+
+```{r data-frame-functions-2, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r data-frame-functions-2-hint-1, eval = FALSE}
+... <- function(...){
+  df |>
+    group_by(...)|>
+    summarize(...(mean_var))
+}
+```
+
+### 
+
+Now that we the function, ready, let's implement the functions on the diamonds dataset.
+
+### Exercise 3
+
+Start a pipe with `diamonds` to `grouped_mean()` and pass in `cut` and `carat`.
+
+```{r data-frame-functions-3, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-3-hint-1, eval = FALSE}
+diamonds |> grouped_mean(...,...)
+```
+
+### 
+
+When encountering an error stating that the group by variables should be found in the diamonds data set, it may not be directly related to the cut variable itself. The issue might be that dplyr interprets group_var as a column instead of recognizing it as a variable.
+
+### Exercise 4
+
+To make this clear, let's start a pipe with `df1` to `grouped_mean()` and pass in `group` and `x` and to clarify, this data set has a column named `group_var`
+
+```{r data-frame-functions-4, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-4-hint-1, eval = FALSE}
+df1 |> grouped_mean(group, x)
+```
+
+### 
+
+This time the code actually ran and returned `group_var` instead of `group` column. This is a what is called `indirenction`. Now to fix this ,we need a mechanism to instruct `grouped_mean()` to interpret `group_var` and `mean_var` as containers holding the desired variables, rather than treating them as variable names themselves.
+
+### Exercise 5
+
+Tidy evaluation includes a solution to this problem called embracing 🤗. Embracing a variable means to wrap it in braces so (e.g.) var becomes `{{ var }}`. Embracing a variable tells dplyr to use the value stored inside the argument, not the argument as the literal variable name.
+
+Copy the code for `grouped_mean` and rename the function to `grouped_mean1`. Modify the arguments within `group_by()`` and `summarize()` to be enclosed with `{{}}`.
+
+
+```{r data-frame-functions-5, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-5-hint-1, eval = FALSE}
+... <- function(df, group_var, ...) {
+  df |> 
+    ...({{ group_var }}) |> 
+    summarize(mean({{ ... }}))
+}
+```
+
+### 
+
+One helpful way to conceptualize what's happening is to imagine `{{ }}` as peering down a tunnel. In this analogy, `{{ var }}` directs a dplyr function to delve inside the variable var itself, rather than searching for a variable specifically named var.
+
+### Exercise 6
+
+Let's start a pipe with `diamonds` to `grouped_mean1` and pass in `cut` and `carat`.
+
+```{r data-frame-functions-6, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r data-frame-functions-6-hint-1, eval = FALSE}
+... |> grouped_mean(..., carat)
+```
+
+### 
+
+Success! But the key challenge in writing data frame functions is figuring out which arguments need to be embraced. 
+
+### Exercise 7
+
+So, when writing data frame functions, a key challenge is determining which arguments need to be embraced. Fortunately, this task is made easy because you can find the relevant information in the documentation 😄. In the documentation, there are two terms you should look for that correspond to the two most common sub-types of tidy evaluation:
+
+Data-masking: This is used in functions like `arrange()`, `filter()`, and `summarize()` that perform computations with variables.
+
+Tidy-selection: This is used in functions like `select()`, `relocate()`, and `rename()` that involve selecting variables.
+
+For many common functions, your intuition about which arguments use tidy evaluation should be sufficient—just consider whether you need to perform computations (e.g., x + 1) or select variables (e.g., a:x).
+
+
+
+### 
+
+In the coming exercises, we will explore the types of useful functions you can write once you understand how to embrace tidy evaluation.
+
+### Exercise 8
+
+Let's explore some use cases for functions: If you commonly perform the same set of summaries when doing initial data exploration, you might consider wrapping them up in a helper function like below.
+
+```
+summary6 <- function(data, var) {
+  data |> summarize(
+    min = min({{ var }}, na.rm = TRUE),
+    mean = mean({{ var }}, na.rm = TRUE),
+    median = median({{ var }}, na.rm = TRUE),
+    max = max({{ var }}, na.rm = TRUE),
+    n = n(),
+    n_miss = sum(is.na({{ var }})),
+    .groups = "drop"
+  )
+}
+```
+
+### 
+
+Based on the image, it'll calculate the min, mean, median, max, count and null values. This makes it easier to get the shape of the data set.
+
+### Exercise 9
+
+Let's start a pipe with `diamonds` to `summary6()` and pass in `carat` as the arguement.
+
+```{r data-frame-functions-9, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-9-hint-1, eval = FALSE}
+diamonds |> summary6(...)
+```
+
+### 
+
+Note how the name is very purposeful, as the function gives us a summary of the data as well as giving you 6 different columns. Also Whenever you wrap summarize() in a helper, we think it’s good practice to set .groups = "drop" to both avoid the message and leave the data in an ungrouped state.
+
+### Exercise 10
+
+The nice thing about `summary6()` is, because it wraps `summarize()`, you can use it on grouped data. Start a pipe with `diamonds` to `group_by()` and pass in `cut`. Then extend the pipe to `summary6()` and pass in `carat`.
+
+```{r data-frame-functions-10, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-10-hint-1, eval = FALSE}
+diamonds |>
+  ...(cut)|>
+  summary6(...)
+```
+
+### 
+
+Furthermore, since the arguments to summarize are data-masking also means that the var argument to `summary6()` is data-masking. That means you can also summarize computed variables for example using `summary6(log10(carat))`.
+
+### Exercise 11
+
+Another simple use case of making functions is making a helper `count()` function. Our name of the function will be `count_prop`, so type that and assign it to `function()`. Pass in `df`, `var`, and `sort = FALSE` for `function()`. Then close the function with curly braces.
+
+```{r data-frame-functions-11, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-11-hint-1, eval = FALSE}
+... <- function(df, var, ...= FALSE){
+  
+}
+```
+
+### 
+
+Note how the name of function is purposeful so others can understand easily.
+
+### Exercise 12
+
+Copying the previous code, within the curly braces, start a pipe with df to `count()` and include `var` with `sort = sort`. Remember to enclose `var` in the body using `{{}}`. Then, extend the pipe to `mutate()` and pass in `prop = n/sum(n)`.
+
+```{r data-frame-functions-12, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r data-frame-functions-12-hint-1, eval = FALSE}
+... <- function(df, var, sort = FALSE) {
+  df |>
+    count({{ ... }}, sort = ...) |>
+    ...(prop = n / sum(...))
+}
+```
+
+### 
+
+This function has three arguments: `df`, `var`, and `sort`, and only var needs to be embraced because it’s passed to `count()` which uses data-masking for all variables. 
+
+### Exercise 13
+
+Start a pipe with `dimaonds` to `count_prop()` and pass in `clarity` as the arguement.
+
+```{r data-frame-functions-13, exercise = TRUE}
+
+```
+
+```{r data-frame-functions-13-hint-1, eval = FALSE}
+dimaonds |>
+  count_prop(...)
+```
+
+### 
+
+Note that we use a default value for sort so that if the user doesn’t supply their own value it will default to FALSE.
+
+### Exercise 14
+
+```{r data-frame-functions-14, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r data-frame-functions-14-hint-1, eval = FALSE}
+
+```
+
+### 
+
+## Plot functions
+### 
+
+Instead of returning a data frame, you might want to return a plot. Fortunately, you can use the same techniques with ggplot2, because `aes()` is a data-masking function. For example, imagine that you’re making a lot of histograms like the following:
+
+```
+diamonds |> 
+  ggplot(aes(x = carat)) +
+  geom_histogram(binwidth = 0.1)
+
+diamonds |> 
+  ggplot(aes(x = carat)) +
+  geom_histogram(binwidth = 0.05)
+```
+
+Wouldn’t it be nice if you could wrap this up into a histogram function?
+
+### Exercise 1
+
+Creating a plot function becomes effortless once you understand that `aes()` serves as a data-masking function. Let's name the function `histogram` and assign it to `function()`. The function will require three variables: `df` for the dataset, `var` for the variable, and `binwidth`, which is set to `NULL` and determines the size of each bar when left empty.
+
+```{r plot-functions-1, exercise = TRUE}
+
+```
+
+```{r plot-functions-1-hint-1, eval = FALSE}
+histogram <- ...(..., var, binwidth = ...){
+  
+}
+```
+
+### 
+
+The reason we set `binwidth` to `NULL` is because the `binwidth` is a optional variable that you can modify when using the function.  
+
+### Exercise 2
+
+Copying the previous code, within the curly braces of `function()`, start a new pipe with `df` to `ggplot()`. Within `aes()` in `ggplot()`, set `x` to `{{x}}`. Then add the `geom_histogram()` layer using `+` and set `binwidth = binwidth`.
+
+```{r plot-functions-2, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-2-hint-1, eval = FALSE}
+.... <- ...(...,var,binwidth = ...){
+  df |>
+    ggplot(aes(... = ...))+
+    geom_...(binwidth =...)
+}
+```
+
+### 
+
+Now that we have the function ready and good to get, let's use it on datsets.
+
+### Exercise 3
+
+Start a pipe with `diamonds` data set to `histogram()` and set the first argument to `carat` and second to `.1`.
+
+```{r plot-functions-3, exercise = TRUE}
+
+```
+
+```{r plot-functions-3-hint-1, eval = FALSE}
+diamonds |> histogram(..., 0.1)
+```
+
+### 
+
+To clarify and clear up some confusion, we already set `df` to `diamonds` with the pipe and setting the rest values within the function call.
+
+### Exercise 4
+
+Note that `histogram()` returns a ggplot2 plot, allowing you to add additional components as desired. To enhance the graph, let's incorporate `labs()`. Copy the previous code and add `labs()` using `+`, setting `x` to `"Size (in carats)"`, and `y` to `"Number of diamonds"`.
+
+```{r plot-functions-4, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-4-hint-1, eval = FALSE}
+... |> 
+  histogram(..., 0.1) +
+  labs(... = "Size (in carats)", y = "...")
+```
+
+### 
+
+Next up, we will talk about adding more variable to the function.
+
+### Exercise 5
+
+It’s straightforward to add more variables to the mix. For example, maybe you want an easy way to eyeball whether or not a data set is linear by overlaying a smooth line and a straight line.
+
+```{r plot-functions-5, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-5-hint-1, eval = FALSE}
+
+```
+
+### 
+
+### Exercise 6
+
+There are many helper functions in in tidyverse and ggplot2 which help makes data manipulation easy, but how do we implement those functions in a function that you will make?
+
+Let's use `fct_infreq()` and `fct_rev()` as the helper functions and what they do is sort the bars by frequency in highest to lowest for a vertical bar graph.
+
+Create a function `sorted_bars` and assign `function()` to it. Pass in `df` and `var` and then close the function with `{}`.
+
+```{r plot-functions-6, exercise = TRUE}
+
+```
+
+```{r plot-functions-6-hint-1, eval = FALSE}
+sorted_bars <- function(..., var){
+  
+}
+```
+
+### 
+
+Now that we set the function name and arguments right, let's now edit the body of the code.
+
+
+### Exercise 7
+
+Copy the code, within the curly braces, start a pipe with `df` to `mutate()` Pass in `var` enclosed with `{{}}` and set it to `fct_rev(fct_infreq({{ var }}))` using `:=`.
+
+```{r plot-functions-7, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-7-hint-1, eval = FALSE}
+sorted_bars <- function(..., var) {
+  ... |> 
+    mutate({{ ... }} := fct_rev(...({{ var }}))) 
+}
+```
+
+### 
+
+We have to use a new operator here, `:=`, because we are generating the variable name based on user-supplied data. Variable names go on the left hand side of `=`, but R’s syntax doesn’t allow anything to the left of `=` except for a single literal name. To work around this problem, we use the special operator `:=` which tidy evaluation treats in exactly the same way as `=`.
+
+### Exercise 8
+
+Copy the code, extend the pipe from `mutate()` to `ggplot()` and pass in `aes(y = {{var}})`. Then add the `geom_bar()` layer.
+
+```{r plot-functions-8, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-8-hint-1, eval = FALSE}
+sorted_bars <- function(..., var) {
+  ... |> 
+    mutate({{ ... }} := fct_rev(...({{ var }}))) |>
+    ggplot(aes(... = {{var}}))+
+    geom_bar()
+}
+```
+
+### 
+
+You have now made a sorted bar graph.
+
+### Exercise 9
+
+Let's now use the `filter()` function which is another helper function. Copy the previous code, change the name to `conditional_bars` , add another argument `var` and delete the `mutate()` and add ` filter({{ condition }})` and also change the `y` to `x` since this is a horizontal grpah.
+
+```{r plot-functions-9, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-9-hint-1, eval = FALSE}
+conditional_bars <- function(df, ..., var) {
+  df |> 
+    filter({{ ... }}) |> 
+    ggplot(aes(... = {{ var }})) + 
+    geom_bar()
+}
+```
+
+### 
+
+Good Work!
+
+You can also get creative and display data summaries in other ways. You can find a cool application at [here](https://gist.github.com/GShotwell/b19ef520b6d56f61a830fabb3454965b); it uses the axis labels to display the highest value. As you learn more about ggplot2, the power of your functions will continue to increase.
+
+
+### Exercise 10
+
+Remember the histogram function we showed you earlier?
+
+```{r}
+histogram1 <- function(df, var, binwidth) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth)
+}
+```
+
+Wouldn’t it be nice if we could label the output with the variable and the bin width that was used?
+
+### 
+
+To do so, we’re going to have to go under the covers of tidy evaluation and use a function from the package we haven’t talked about yet: `rlang`. `rlang` is a low-level package that’s used by just about every other package in the tidyverse because it implements tidy evaluation (as well as many other useful tools).
+
+### Exercise 11
+
+To solve the labeling problem, we can utilize `rlang::englue()`. It works similarly to `str_glue()`, inserting values wrapped in `{ }` into the string. Additionally, it understands `{{ }}`, automatically inserting the appropriate variable name.
+
+Copying the code for the `histogram1` function, before the start of the pipe, create a new variable `label` and assign it the value of `rlang::englue("A histogram of {{var}} with binwidth {binwidth}")`. Then, within the `df` pipe, add the `labs()` layer after `geom_histogram()`, and set `title = label` within `labs()`.
+
+```{r plot-functions-11, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-11-hint-1, eval = FALSE}
+histogram1 <- function(df, ..., binwidth) {
+  label <- rlang::...("A histogram of {{var}} with binwidth {...}")
+  
+  df |> 
+    ggplot(aes(x = {{ ... }})) + 
+    geom_histogram(binwidth = binwidth) + 
+    labs(...` = label)
+}
+```
+
+### 
+
+If you want to explore about `rlang`, check this [out](https://www.rdocumentation.org/packages/rlang/versions/1.1.1).
+ 
+### Exercise 12
+
+Now let's use the function, so start a pipe with `diamonds` to `histogram1()` and pass in `carat` and `.1` as the arguments.
+
+```{r plot-functions-12, exercise = TRUE}
+
+```
+
+```{r plot-functions-12-hint-1, eval = FALSE}
+diamonds |>
+  ...(carat, ...)
+```
+
+### 
+
+You can use the same approach in any other place where you want to supply a string in a ggplot2 plot.
+
+### Exercise 13
+
+Let's make the x and y axis look better so copy the code and after `histogram()` add the `labs()` layer and set `x` to `"Size (in carats)"` and `y` to `"Number of diamonds"`.
+
+```{r plot-functions-13, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r plot-functions-13-hint-1, eval = FALSE}
+... |>
+  ...(carat, ...) +
+  labs(x = ..., y = ...)
+```
+
+### 
+
+Good Work! You now know how to make plot functions.
+
+## Style
+### 
+
+R doesn’t care what your function or arguments are called but the names make a big difference for humans. Ideally, the name of your function will be short, but clearly evoke what the function does. That’s hard! But it’s better to be clear than short, as RStudio’s autocomplete makes it easy to type long names.
+
+### Exercise 1
+
+Generally, function names should be verbs, and arguments should be nouns. However, there are some exceptions. It is acceptable to use nouns if the function computes a well-known noun (e.g., "mean()" is preferred over "compute_mean()") or if it accesses a property of an object (e.g., "coef()" is preferred over "get_coefficients()"). Trust your judgment and feel free to rename a function if you come up with a better name later on.
+
+In next few exercises we will show you different examples for the names of functions. Below is one and to clarify I put a hashtag to comment it.
+
+```
+f()
+```
+
+This name is too short and doesn't mean anything but just the word `f`.
+
+### 
+
+### Exercise 2
+
+Below is another example:
+
+```
+my_awesome_function()
+```
+
+This name is not a verb and also is not descriptive at the same time  like the function above.
+
+### 
+
+### Exercise 3
+
+Below is another example:
+
+```
+impute_missing()
+collapse_years()
+```
+
+### 
+
+Even though this function name is clear, it is still little to long for us to type again and again.
+
+### Exercise 4
+
+R also doesn’t care about how you use white space in your functions but future readers will. Additionally, `function()` should always be followed by squiggly brackets `({})`, and the contents should be indented by an additional two spaces. This makes it easier to see the hierarchy in your code by skimming the left-hand margin. 
+
+Here is a good example of good indentation, which helps us see the hierarchy in the code.
+
+```
+density <- function(color, facets, binwidth = 0.1) {
+diamonds |> 
+  ggplot(aes(x = carat, y = after_stat(density), color = {{ color }})) +
+  geom_freqpoly(binwidth = binwidth) +
+  facet_wrap(vars({{ facets }}))
+}
+```
+
+### 
+
+Missing extra two spaces
+
+### Exercise 5
+
+Below is a example of having two extra spaces:
+
+```
+density <- function(color, facets, binwidth = 0.1) {
+  diamonds |> 
+  ggplot(aes(x = carat, y = after_stat(density), color = {{ color }})) +
+  geom_freqpoly(binwidth = binwidth) +
+  facet_wrap(vars({{ facets }}))
+}
+```
+
+### 
+
+In the code above the pipe is indented incorrectly. As you can see we recommend putting extra spaces inside of `{{ }}`. This makes it very obvious that something unusual is happening.
+
+## Summary
+### 
+
+This tutorial covered [Chapter 26: Functions](https://r4ds.hadley.nz/functions.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to make simple functions at the beginning and progressed into making vector, data frame, and plot functions which are much more complex that the simple functions.
+
+
+```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+```

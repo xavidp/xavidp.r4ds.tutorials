@@ -15,12 +15,16 @@ description: 'Tutorial for Chapter 10: Layers'
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
-library(primer.data)
-library(ggthemes)
-library(plotly)
+library(maps)
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
+
+nz <- map_data("nz")
+
+car_names <- c(`f` = "Front Wheel Drive",
+               `4` = "4 Wheel Drive",
+               `r` = "Rear Wheel Drive")
 
 polling_data <- read_csv("data/vis4_polling_data.csv",
               col_types = cols(createddate = col_date(),
@@ -34,13 +38,15 @@ polling_data <- read_csv("data/vis4_polling_data.csv",
 ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
 ```
 
+<!-- Have students load up all libraries, wherever you like. -->
+
 <!-- Note that the later material sucks! There are not enough knowledge drops.  -->
 
 <!-- This was a bit too long. Also, much if it is sloppy! Need to revisit. -->
 
 <!-- Change elements of theme.. -->
 
-<!-- Each section should begin with two questions looking at the data, even if they are the same questions each time. print, glimpse, ? if it is in primer.data, even something ike trains$age can be informative. -->
+<!-- Each section should begin with two questions looking at the data, even if they are the same questions each time. print, glimpse. -->
 
 <!-- Make the plots cooler! Add links to  https://ggplot2-book.org/. And https://socviz.co/. Or maybe put these in case studies. Love this one: https://socviz.co/groupfacettx.html#histograms. -->
 
@@ -58,7 +64,7 @@ This tutorial covers [Chapter 10: Layers](https://r4ds.hadley.nz/layers.html) fr
 
 ### Exercise 1
 
-View all of the data in `mpg` by using `glimpse()` on it
+Run `glimpse()` on `mpg`.
 
 ```{r aesthetic-mappings-simple-1, exercise = TRUE}
 
@@ -188,7 +194,6 @@ point_p2 <- ggplot(data = diamonds,
                                  color = clarity)) +
   geom_point(size = .25, alpha = .5) +
   scale_x_log10() +
-  theme_few() +
   labs(title = "Diamond Carat and Price",
        subtitle = "3+ carat diamonds are rare and of low quality",
        x = "Price",
@@ -255,6 +260,10 @@ Continue your pipe and add `ggplot()`. Map `price` to the x-axis and `carat` to 
   ggplot(mapping = aes(x = ...,
                        y = ...))
 ```
+
+###
+
+If you want to add any themes to your plots check out: [**ggplot2**](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) contains all aesthetic specifications that are possible for the data. In addition, [**ggplot2: elegant graphics**](https://ggplot2-book.org/) provides all possible aesthetics that any user will use.
 
 ### Exercise 5
 
@@ -346,29 +355,6 @@ Remember: a logarithmic scale means that each increment increases by a factor of
 
 ### Exercise 9
 
-Good! Now to change the theme of the plot, add another layer. This layer should be `theme_few()`.
-
-```{r aesthetic-mappings-advanced-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r aesthetic-mappings-advanced-9-hint-1, eval = FALSE}
-... + 
-  ...()
-```
-
-### 
-
-This theme is in **ggthemes**. Remember, there are some themes that are built into the `tidyverse` package, and some that are not. If you want to use themes that aren't in `tidyverse`, you must load `library(ggthemes)`.
-
-###
-
-Besides the themes that we have used, [**ggplot2**](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) contains all aesthetic specifications that are possible for the data. In addition, [**ggplot2: elegant graphics**](https://ggplot2-book.org/) provides all possible aesthetics that any user will use.
-
-### Exercise 10
-
 To finish your plot, use `labs()` to give the graph a title, subtitle, axis labels, legend label, and caption of your choosing. To set the legend label, use the argument `color`.
 
 Reminder: This is what your plot should look like.
@@ -377,13 +363,13 @@ Reminder: This is what your plot should look like.
 point_p2
 ```
 
-```{r aesthetic-mappings-advanced-10, exercise = TRUE}
+```{r aesthetic-mappings-advanced-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r aesthetic-mappings-advanced-10-hint-1, eval = FALSE}
+```{r aesthetic-mappings-advanced-9-hint-1, eval = FALSE}
 ... +
   labs(...,
        color = "Clarity",
@@ -412,9 +398,11 @@ biden_p <- ggplot(data = polling_data,
   geom_smooth(method = "gam",
               formula = y ~ s(x, bs = "cs"),
               se = TRUE) +
-  theme_fivethirtyeight() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  labs(title = "Biden's Approval Rating From Jan 22 to Jun 30",
+  theme(legend.position="bottom") +
+  labs(x = "Month",
+       y = "Percent",
+       title = "Biden's Approval Rating From Jan 22 to Jun 30",
        subtitle = "While Biden's approval rating has stayed relatively static, his disapproval rating \nhas been rising.",
        color = "",
        caption = "Source: Five Thirty Eight Data")
@@ -436,11 +424,11 @@ summary(...)
 
 ### 
 
-This data was taken from the fivethirtyeight website. You will learn how to modify data into CSVs and use them in R in a later tutorial.
+This data was taken from the fivethirtyeight website. 
 
 ### Exercise 2
 
-Write down the name of the three column headers.
+Write down the name of the three variables.
 
 ```{r geometric-objects-with-smooth-2}
 question_text(NULL,
@@ -574,7 +562,7 @@ We want to see the trend line for Biden's approval/disapproval ratings throughou
 
 ### 
 
-If you just add this layer, you will get a few warning messages. We will fix this in the following exercises. If you place mappings in a geom function, ggplot2 will treat them as local mappings for the layer. It will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.
+If you just add this layer, you will get a few warning messages. We will fix this in the following exercises. If you place mappings in a geom function, `ggplot2` will treat them as local mappings for the layer. It will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.
 
 ### Exercise 9
 
@@ -613,7 +601,7 @@ Within `geom_smooth()` set `formula` to `y ~ s(x, bs = "cs")`.
 
 ### 
 
-Just like y ~ x indicates a relationship between x and y, `y ~ s(x, bs = "cs")` indicates a "generalized additive model" relationship. With a generalized additive model we are able to handle large data.
+Just like `y ~ x` indicates a relationship between x and y, `y ~ s(x, bs = "cs")` indicates a "generalized additive model" relationship. With a generalized additive model we are able to handle large data.
 
 ### Exercise 11
 
@@ -638,7 +626,7 @@ With `se` we are able to create a margin of error that makes our data more accur
 
 ### Exercise 12
 
-Since the data comes from the FiveThirtyEight website, we will use the fivethirtyeight theme! Add `theme_fivethirtyeight()` to your plot.
+Next, we want to change the labels on the graph so they are in percentage format. Use scale_y_continuous to do so. Set the `labels` argument to `scales::percent_format(accuracy = 1)`.
 
 ```{r geometric-objects-with-smooth-12, exercise = TRUE}
 
@@ -647,20 +635,17 @@ Since the data comes from the FiveThirtyEight website, we will use the fivethirt
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-with-smooth-12-hint-1, eval = FALSE}
-... + 
-  geom_smooth(method = "gam",
-              formula = y ~ s(x, bs = "cs"),
-              se = TRUE) +
-  ...()
+...+
+  scale_y_continuous(labels = ...)
 ```
 
 ### 
 
-Note: the FiveThirtyEight theme actually comes from the `ggthemes()` package, not the FiveThirtyEight package.
+We use scale_y_continuous when we want to modify the y-axis for continuous data. [This documentation here](https://ggplot2.tidyverse.org/reference/scale_continuous.html) will tell you more, and all the possible arguments you can use with `scale_y_continuous`
 
 ### Exercise 13
 
-Next, we want to change the labels on the graph so they are in percentage format. Use scale_y_continuous to do so. Set the `labels` argument to `scales::percent_format(accuracy = 1)`.
+Currently our legend is to the right of the graph. Let's change the way that we see our legend. Add `theme()` to the pipe and set `legend.position` to "bottom".
 
 ```{r geometric-objects-with-smooth-13, exercise = TRUE}
 
@@ -668,14 +653,14 @@ Next, we want to change the labels on the graph so they are in percentage format
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-with-smooth-13-hint-1, eval = FALSE}
-...+
-  scale_y_continuous(labels = ...)
+```{r geometric-objects-with-smooth-13-hint, eval = FALSE}
++ 
+  theme(...="bottom")
 ```
 
-### 
+###
 
-We use scale_y_continuous when we want to modify the y-axis for continuous data. [This documentation here](https://ggplot2.tidyverse.org/reference/scale_continuous.html) will tell you more, and all the possible arguments you can use with scale_y_continuous.
+With the help of `legend.position`. We have the ability to set it to the `left`, `right`, `top`, and `bottom` based on how we would like to see it within our graph.
 
 ### Exercise 14
 
@@ -695,7 +680,9 @@ biden_p
 
 ```{r geometric-objects-with-smooth-14-hint-1, eval = FALSE}
 ... +
-  labs(title = ...,
+  labs(x = ...,
+       y = ...,
+       title = ...,
        subtitle = ...,
        color = ...,
        caption = ...)
@@ -928,217 +915,40 @@ Let's try the same data for before but with a `geom_boxplot()` instead of a `geo
 
 ggplot2 provides a vast amount of opportunities, however, there are a countless number of plots that can be made through different geoms and extensions. Check out [**possible options**](https://exts.ggplot2.tidyverse.org/gallery/) for any future implementations or possibilities. 
 
-## Geometric Objects with `geom_density()`
-### 
-
-Let's create the following density plot.
-
-```{r}
-dens_p <- trains |> 
-  filter(age >= 40) |> 
-  ggplot(aes(age, fill = party)) +
-  geom_density(alpha = 0.5) + 
-  xlim(40, 75) +
-  labs (title = "Age of Democrats and Republicans in Trains Experiment",
-        subtitle = "More seniors are democrats in the experiment",
-        x = "Age",
-        y = "Density",
-        fill = "Party",
-        caption = " Source: Enos (2014)")
-
-dens_p
-```
-
-### Exercise 1
-
-Type `trains` to view the data set. 
-
-```{r geomdensity-1, exercise = TRUE}
-
-```
-
-### Exercise 2
-
-Use the `$` operator to extract the `age` column as a vector. 
-
-```{r geomdensity-2, exercise = TRUE}
-
-```
-
-```{r geomdensity-2-hint-1, eval = FALSE}
-trains$...
-```
-
-### 
-
-The numbers in square brackets help you keep track of what row the number belongs to.
-
-### Exercise 3
-
-Start a new pipe with `trains`. Filter for rows in which `age` is greater than or equal to 40.
-
-```{r geomdensity-3, exercise = TRUE}
-
-```
-
-```{r geomdensity-3-hint-1, eval = FALSE}
-... |> 
-  filter(age >= ...)
-```
-
-### Exercise 4
-
-Use `ggplot()` to map `age` to the x-axis.
-
-```{r geomdensity-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-4-hint-1, eval = FALSE}
-... |> 
-  ggplot(aes(x = ...))
-```
-
-Note: no points will be plotted because `geom` has not been used
-
-### Exercise 5
-
-Add the layer `geom_density()`.
-
-```{r geomdensity-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-5-hint-1, eval = FALSE}
-... +
-  ...()
-```
-
-###
-
-`geom_density()` is a plotting function that creates a smooth density estimate of a variable.
-
-### Exercise 6
-
-Set `fill` to `party` within the `aes()` function in `ggplot()`. 
-
-```{r geomdensity-6, exercise = TRUE}
-ggplot(aes(x = age,
-           fill = ...))
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-6-hint-1, eval = FALSE}
-Recall fill goes inside the aes() argument of ggplot()
-```
-
-Right now, the two plots overlap each other. We will change the transparency so we can see both parties clearly.
-
-### Exercise 7
-
-Within `geom_density()` set the `alpha` argument to 0.5. 
-
-```{r geomdensity-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-7-hint-1, eval = FALSE}
-... +
-  geom_density(alpha = ...)
-```
-
-###
-
-`geom_density()` can be combined with other geoms and aesthetics to create complex visualizations.
-
-### Exercise 8
-
-Let's also add an `xlim()` function, to set the range of x values on our plot from 40 to 75. This way, we can see the full distributions.
-
-```{r geomdensity-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-8-hint-1, eval = FALSE}
-Make sure you put a comma between 40 and 75 within the xlim() function.
-```
-
-```{r geomdensity-8-hint-2, eval = FALSE}
-... +
-  xlim(..., ...)
-```
-
-###
-
-With `xlim()` we can specify the range of values that will be displayed on the x-axis, excluding any data points outside that range.
-
-### Exercise 9
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, axis labels, and caption of your choosing.
-
-```{r geomdensity-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geomdensity-9-hint-1, eval = FALSE}
-... +
-  labs(..., 
-       fill = "...",
-       ...)
-```
-
-Reminder: This is what our plot should look like.
-
-```{r}
-dens_p
-```
-
-###
-
-You can completely transform the look of your plot by changing its geom, and different geoms can reveal different features of your data. The density graph that we plotted in this example is different from the features presented in the box plot and histogram graph.
-
 ## Facets and Statistical Transformations with `geom_col()`, `facet_wrap()`, and `facet_grid()`
 ### 
 
 Let's make the same plot, using a related function, `geom_col()`. Unlike `geom_bar()`, you have to specify the value for the y-axis when using this function. 
+
 ```{r make-col-p}
-col_p <- trains  |> 
+col_p <- mpg |> 
+  select(drv, fl, class) |>
   summarize(total = n(),
-            .by = c(race, line, treatment)) |> 
-  ggplot(aes(x = race, y = total, fill = line)) +
+            .by = c(drv, fl, class)) |> 
+  ggplot(aes(x = fl, 
+             y = total, 
+             fill = class)) +
     geom_col() +
-    facet_wrap(~ treatment) +
-    theme_classic() +
-    labs(title = "Starting Attitudes Toward Immigration Issue",
-         subtitle = "Higher proportion of minorities among treated participants",
-         x = "Race",
+    facet_wrap(~ drv,
+               labeller = as_labeller(car_names)) +
+    labs(title = "The Fuel Type Of Cars Based On Their Class Type",
+         subtitle = "Higher Proportion of 4 Wheel and Front Wheel Drive Participants",
+         x = "Fuel Type",
          y = "Number of Participants",
-         fill = "Line",
-         caption = "Source: Enos (2014)")
+         fill = "Class")
 col_p
 ```
 
 ### Exercise 1
 
-Start a pipe with `trains`. Select the columns `race`, `treatment` and `line`. 
+Start a pipe with `mpg`. Select the columns `drv`, `fl` and `class`. 
 
 ```{r facets-statistical-transformations-1, exercise = TRUE}
 
 ```
 
 ```{r facets-statistical-transformations-1-hint-1, eval = FALSE}
-trains |> 
+mpg |> 
   select(..., ..., ...)
 ```
 
@@ -1164,7 +974,7 @@ Copy/paste the previous code. Use `summarize()` to create a new table with the c
 
 ### Exercise 3
 
-Add a `.by` argument to `summarize()` with the value set to `race`, `treatment`, and `line`. You need to place these three values with a vector using `c()`. 
+Add a `.by` argument to `summarize()` with the values set to `drv`, `fl`, and `class`. You need to place these three values with a vector using `c()`. 
 
 ```{r facets-statistical-transformations-3, exercise = TRUE}
 
@@ -1177,14 +987,10 @@ Add a `.by` argument to `summarize()` with the value set to `race`, `treatment`,
   summarize(total = n(),
             .by = c(..., ..., ...))  
 ```
- 
-### 
-
-Note that there are no Blacks or Hispanics from the Franklin Line in the Control Group. 
 
 ### Exercise 4
 
-Continue your pipe with `ggplot()`. Map the variable `race` to the x-axis. Map total to the `y` axis. Add the layer `geom_col()`.
+Continue your pipe with `ggplot()`. Map the variable `fl` to the x-axis. Map `total` to the `y` axis. Add the layer `geom_col()`.
 
 ```{r facets-statistical-transformations-4, exercise = TRUE}
 
@@ -1200,11 +1006,11 @@ ggplot(aes(x = ...,
 
 ### 
 
-`geom_col()` will automatically take the three to four values for each `race` in the `total` column and stack them to form one bar. This behavior is from the fact that the `position` argument for `geom_col()` is set by default to "stack". 
+`geom_col()` will automatically take the three to four values for each `fl` in the `total` column and stack them to form one bar. This behavior is from the fact that the `position` argument for `geom_col()` is set by default to "stack". 
 
 ### Exercise 5
 
-Now, map `line` to `fill`.
+Now, map `class` to `fill`.
 
 ```{r facets-statistical-transformations-5, exercise = TRUE}
 
@@ -1215,13 +1021,14 @@ Now, map `line` to `fill`.
 ```{r facets-statistical-transformations-5-hint-1, eval = FALSE}
 ggplot(data = ... , 
           aes(x = ..., 
+              y = ...,
               fill = ...) +
   geom_col()
 ```
 
 ### Exercise 6
 
-Add the layer `facet_wrap()` and facet by the variable `treatment`. 
+Add the layer `facet_wrap()` and facet by the variable `drv`. 
 
 ```{r facets-statistical-transformations-6, exercise = TRUE}
 
@@ -1240,22 +1047,32 @@ The `facet_wrap()` function arranges the panels in a grid, wrapping them onto mu
 
 ### Exercise 7
 
-We won't be implementing this within our plot grid, however, another way to view our data is through `facet_grid()` through `treatment ~ race`. This will open up a grid which will display each of the variables in their own respective grid. (Make sure to get rid of the `facet_wrap()` from the previous exercise when trying this exercise out, and implement `facet_wrap()` after this exercise again)
+We want to change the labels of the facet_wrap that we just created. We can do this by setting `labeller` to `as_labeller(car_names)`. Note: `car_names` has already been created for you.
 
-```{r facets-statistical-transformations-7, exercise = TRUE}
+```{r facets-and-statistic-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r facets-statistical-transformations-7-hint-1, eval = FALSE}
-... + 
-  facet_grid(treatment ~ ...)
+```{r facets-and-statistic-7-hint, eval = FALSE}
+facet_wrap(~...,
+               ... = as_labeller(car_names)
 ```
+
+###
+
+Through the `as_labeller()` function we are able to change the labels of `facet_wrap()`.
 
 ### Exercise 8
 
-Let's add a theme to our graph. Add the layer `theme_classic()` to your code. 
+To finish your plot, use `labs()` to give the graph a title, subtitle, axes labels, legend labels, and caption of your choosing.
+
+Reminder: This is what your plot should look like.
+
+```{r}
+col_p
+```
 
 ```{r facets-statistical-transformations-8, exercise = TRUE}
 
@@ -1264,27 +1081,6 @@ Let's add a theme to our graph. Add the layer `theme_classic()` to your code.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r facets-statistical-transformations-8-hint-1, eval = FALSE}
-... + 
-  ...()
-```
-
-### Exercise 9
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, axes labels, legend labels,  and caption of your choosing.
-
-Reminder: This is what your plot should look like.
-
-```{r}
-col_p
-```
-
-```{r facets-statistical-transformations-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r facets-statistical-transformations-9-hint-1, eval = FALSE}
 ... +
   labs(..., 
        fill = "...",
@@ -1301,37 +1097,39 @@ Through this we are able to view our data with a `facet_wrap` which splits a plo
 Let's create this graph using `geom_bar()`.
 
 ```{r}
-bar_p <- ggplot(data = trains, 
-                   mapping = aes(x = station, 
-                                 fill = race)) + 
+bar_p <- ggplot(data = midwest, 
+                   mapping = aes(x = state, 
+                                 fill = category)) + 
   geom_bar(alpha = 1/5, 
            position = "dodge") + 
-  theme(axis.text.x = element_text(angle=45, 
-                                   hjust=1)) + 
-  labs(title = "Race found at each station",
-       subtitle = "The most popular station with the most common race found within each station",
-       x = "Station",
+  labs(title = "Categories found in each state",
+       subtitle = "The 5 states in the midwest with each category present.",
+       x = "State",
        y = "Count",
-       fill = "Race")
+       fill = "Category")
 
 bar_p
 ```
 
 ### Exercise 1
 
-Skim the `trains` data set. 
+
+Run `glimpse()` on the `midwest` data set. 
 
 ```{r statistical-transfor-1, exercise = TRUE}
 
 ```
 
-### 
+```{r statistical-transfor-1-hint-1, eval = FALSE}
+...(midwest)
+```
 
-Notice that there are no missing values for `station`. This means we do not need to use `drop_na`.  
+###
+
 
 ### Exercise 2
 
-Add `ggplot()` and map `station` to the x axis of the `trains` data and set `fill` to `race`.
+Add `ggplot()` and map `state` to the x axis of the `midwest` data and set `fill` to `category`.
 
 ```{r statistical-transfor-2, exercise = TRUE}
 
@@ -1345,7 +1143,7 @@ ggplot(data = ...,
 
 ### 
 
-Here we have used `station` data on the x axis and the count on the y axis is automatically implemented. Within a bar graph, we only input the x variable due to the y variable automatically being created usually as count. Through this we can see count within each `station` in the `trains` data.
+Here we have used `state` data on the x axis and the count on the y axis is automatically implemented. Within a bar graph, we only input the x variable due to the y variable automatically being created usually as count. Through this we can see count within each `state` in the `midwest` data.
 
 ### Exercise 3
 
@@ -1383,7 +1181,7 @@ Within `geom_bar()`, set `alpha` to 1/5, `position` to `"dodge"`.
 
 ### Exercise 5
 
-Now we are going to use theme to adjust the labels for station. As you can see they are all bunched up together and we can fix this through an adjustment of how they are positioned. Set `axis.text.x` to `element_text`. Within `element_text` set `angle` to 45 and `hjust` to 1.
+Finally, use `labs()` to give the graph a title, subtitle, axis labels, legend labels, and caption of your choosing.
 
 ```{r statistical-transfor-5, exercise = TRUE}
 
@@ -1392,21 +1190,6 @@ Now we are going to use theme to adjust the labels for station. As you can see t
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r statistical-transfor-5-hint-1, eval = FALSE}
-... + theme(axis.text.x = ...(angle=..., 
-                              hjust=...))
-```
-
-### Exercise 6
-
-Finally, use `labs()` to give the graph a title, subtitle, axis labels, legend labels, and caption of your choosing.
-
-```{r statistical-transfor-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r statistical-transfor-6-hint-1, eval = FALSE}
 ... +
   labs(..., 
        fill = "...",
@@ -1425,27 +1208,32 @@ We like using bar charts here because they bin your data and then plot bin count
 
 ###
 
-For more information on other stat_summary plots besides bar graphs check out: [**Layers_Stat_Summary**](https://r4ds.hadley.nz/layers.html#statistical-transformations)
+For more information on other stat_summary plots besides bar graphs check out [Statistical transformations](https://r4ds.hadley.nz/layers.html#statistical-transformations) from [Chapter 10: Layers](https://r4ds.hadley.nz/layers.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/).
 
 ## Coordinate Systems
+###
+
 Coordinate systems are probably the most complicated part of ggplot2. The default coordinate system is the Cartesian coordinate system where the x and y positions act independently to determine the location of each point. We are going to create one of these systems with the US.
 
 ### Exercise 1
 
-Install and load the `maps` package
+Load the `maps` package with `library()`.
 
 ```{r coordinate-systems-1, exercise = TRUE}
 
 ```
 
 ```{r coordinate-systems-1-hint, eval = FALSE}
-install.packages('maps')
-library(maps)
+library(...)
 ```
+
+###
+
+The `maps` package includes the area of each matching region in the map is computed, and regions which match the same element of regions have their areas combined. Each region is assumed planar, with vertices specified by the x and y components of the map object.
 
 ### Exercise 2
 
-Set nz to the map_data of "nz"
+Run `summary()` on `nz` to view its contents.
 
 ```{r coordinate-systems-2, exercise = TRUE}
 
@@ -1457,7 +1245,7 @@ nz <- map_data("nz")
 
 ### Exercise 3
 
-We now want to plot our nz data with `ggplot`
+We now want to plot our `nz` data with `ggplot()`
 
 ```{r coordinate-systems-3, exercise = TRUE}
 
@@ -1538,322 +1326,8 @@ Finally let us use the `coord_quickmap()` which sets the aspect ratio correctly 
 ```
 
 ###
-Now you should see the New Zealand data plotted out based on the spatial data. We can visualize more data through `coord_polar()`. Take a look at the functions of [**coord_polar()**](https://r4ds.hadley.nz/layers.html#coordinate-systems)
 
-## Make a `plotly` graph
-### 
-
-`plotly` allows us to make interactive graphs. It's especially useful with `geom_point()`. Hover over the points to see more information about them.
-
-```{r make-plotly}
-nominate_plot <- nominate |> 
-  filter(congress == 116) |> 
-  ggplot(aes(nominate_dim1, nominate_dim2, color = party,
-             text = paste("Name:", name, "\n",
-                                    "State:", state, "\n",
-                                     "Chamber:", chamber))) +
-  geom_point(size = 0.8) +
-  labs(title = "Economic and Social Ideology of 116th U.S. Congress", 
-       x = "Economic Ideology", 
-       y = "Social Ideology", 
-       color = "Party",
-       caption = "Voteview")
-
-nom_p <- ggplotly(nominate_plot, tooltip = "text")
-
-nom_p
-```
-
-### Exercise 1
-
-Run `?nominate` to open the help page for the nominate data set. 
-
-```{r plotly-1, exercise = TRUE}
-
-```
-
-### Exercise 2
-
-Start a new pipe with `nominate`. Arrange the tibble by `congress` in descending order to find the number of the most recent congress in the data set. 
-
-```{r plotly-2, exercise = TRUE}
-
-```
-
-```{r plotly-2-hint-1, eval = FALSE}
-... |> 
-  arrange(desc(...))
-```
-
-### 
-
-The most recent congress is the 116th. 
-
-### Exercise 3
-
-Start a new pipe with `nominate`. Filter to keep rows in which the value of `congress` is 116. 
-
-```{r plotly-3, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-3-hint-1, eval = FALSE}
-... |> 
-  filter(congress == ...)
-```
-
-The variable `congress` indicates the number of Congress, i.e. the 116th Congress being Congress from 2019-2021, the 115th Congress from 2017-2019, etc. 
-
-### Exercise 4
-
-Drop any rows with `N/A` values in the `nominate_dim1` and `nominate_dim2` columns with `drop_na()`. 
-
-```{r plotly-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-4-hint-1, eval = FALSE}
-... |> 
-  drop_na(..., ...)
-```
-
-### Exercise 5
-
-Select the columns `nominate_dim1`, `nominate_dim2`, `party`, `name`, `state`, and `chamber`. 
-
-```{r plotly-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-5-hint-1, eval = FALSE}
-... |> 
-  select(..., ..., ..., ..., ..., ...)
-```
-
-### Exercise 6
-
-Use `ggplot()` and `aes()` to map `nominate_dim1` to `x` and `nominate_dim2` to `y`.
-
-```{r plotly-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-6-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ...,
-                       y = ...))
-```
-
-### Exercise 7
-
-Add the layer `geom_point().`
-
-```{r plotly-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-7-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ...,
-                       y = ...)) +
-    ...()
-```
-
-### 
-
-Currently, we can't tell the difference between parties. We will fix this by changing the colors to represent each party.
-
-### Exercise 8
-
-Map `party` to `color` within `aes()`. Within `geom_point()` set the argument `size` to 0.8.
-
-```{r plotly-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-8-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ...))
-```
-
-### Exercise 9
-
-Within `geom_point()`, set the argument `size` to 0.8. 
-
-```{r plotly-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-9-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ...)) +
-  geom_point()
-```
-
-### 
-
-### Exercise 10
-
-Within `aes()` in `ggplot()`, add the argument `text` and set this equal to the function `paste`. This will return an error because we have not assigned anything to `text` yet.  We will do this in the following exercises. 
-
-```{r plotly-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-10-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ..., 
-                       text = paste()))+ 
-  geom_point(...)
-```
-
-The `paste` function allows quoted strings and variables to be combined into one string. We will use this function to create our `plotly` labels. Note, you should get an error during this.
-
-### Exercise 11
-
-Let's make the first line that will appear on our plotly label. Within `paste()`, first enter the string `"Name:"`. Separate this string by a comma a then write `name` without quotes, this is the column whose info we want to appear in this position on our label. Separate this by a comma, and then write `"\n"`. This is the symbol for a new line and it will not be printed. Keep this all on one line for the easiest formatting. Refer to the hint if needed.
-
-```{r plotly-11, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-11-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ..., 
-                       text = paste("Name:", name, "\n"))) + 
-  geom_point(...)
-```
-
-### Exercise 12
-
-Let's make an equivalent label for a congressman's state. Place a comma after the `"\n"` from the previous exercise. On a new line within paste, enter the string `"State:"`. Separate this string by a comma and then write `state` without quotes. Separate this by a comma and then include the new line symbol, `"\n"`. 
-
-```{r plotly-12, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-12-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ..., 
-                       text = paste("Name:", name, "\n",
-                                    "State:", state, "\n"))) +
-  geom_point(...)
-```
-
-### Exercise 13
-
-Let's make an equivalent label for a congressman's chamber. Place a comma after the `"\n"` from the previous exercise. On a new line within paste, enter the string `"Chamber:"`. Separate this string by a comma and then write `chamber` without quotes. Since this is our final line, do not include another new line symbol, simply add the closing the parentheses (if it is not there already). 
-
-```{r plotly-13, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-13-hint-1, eval = FALSE}
-... |> 
-  ggplot(mapping = aes(x = ..., 
-                       y = ..., 
-                       color = ..., 
-                       text = paste("Name:", name, "\n",
-                                    "State:", state, "\n",
-                                    "Chamber:", chamber))) +
-  geom_point(...)
-```
-
-### Exercise 14
-
-Use `labs()` to add a title, axes labels, legend labels, and a caption to your plot. `ggplotly()` does not support subtitles. 
-
-```{r plotly-14, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-14-hint-1, eval = FALSE}
-+ labs(title = "...",
-       subtitle = "...",
-       x = "...",
-       y = "...",
-       color = "...",
-       caption = "...")
-```
-
-### Exercise 15
-
-To make a graph with `plotly`, you need to save your `ggplot()` to an object in R, which you will use in the function `ggplotly`. Copy/paste your full pipe from the previous exercise and assignment. At the beginning of the pipe use the `<-` to assign this to an object named `nominate_plot`.
-
-```{r plotly-15, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-15-hint-1, eval = FALSE}
-nominate_plot <- nominate |> 
-  filter(congress == 116) 
-  ...
-```
-
-### Exercise 16
-
-Copy/paste the code from above. On a new line not connected to the pipe above, type the function `ggplotly()`. The first argument should be the name of the ggplot object, `nominate_plot`. Make the second argument `tooltip = "text"`. This tells `ggplotly()` to make the label based on what we have in the `text` argument in `ggplot()`.
-
-```{r plotly-16, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plotly-16-hint-1, eval = FALSE}
-nominate_plot <- nominate |> 
-  filter(congress == 116) |> 
-  ... 
-
-ggplotly(nominate_plot, tooltip = ...)
-
-```
-
-Reminder: This is what your graph should look like. Test to make sure you can interact with your graph. 
-
-```{r}
-nom_p
-```
-
-### 
-
-Plotly allows for users to interact with graphs and enter a vast new world which can provide users the opportunity to display their data in an whole new way. 
+Now you should see the New Zealand data plotted out based on the spatial data. We can visualize more data through `coord_polar()`. Take a look at the use of [`coord_polar()`](https://r4ds.hadley.nz/layers.html#coordinate-systems)
 
 ## Summary
 ### 
